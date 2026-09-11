@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The LinkedIn Outreach Blueprint</title>
+<style>
+  :root{
+    --navy:#0A2540;
+    --navy-soft:#12335A;
+    --blue:#2563EB;
+    --blue-deep:#1D4ED8;
+    --ice:#EFF6FB;
+    --ice-2:#E3EEF9;
+    --line:#D7E3F0;
+    --ink:#0F2138;
+    --slate:#4C6079;
+    --white:#FFFFFF;
+    --good:#12805C;
+    --good-bg:#E5F5EE;
+    --warn:#B45309;
+    --warn-bg:#FDF3E4;
+    --radius-s:6px;
+    --radius-m:10px;
+    --serif:Georgia,'Iowan Old Style','Times New Roman',serif;
+    --sans:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    font-family:var(--sans);
+    color:var(--ink);
+    background:var(--white);
+    line-height:1.55;
+  }
+  h1,h2,h3,h4{font-family:var(--serif); color:var(--navy); margin:0 0 .4em 0; font-weight:400;}
+  p{margin:0 0 1em 0; color:var(--slate);}
+  a{color:var(--blue);}
+  .wrap{max-width:980px; margin:0 auto; padding:0 28px;}
+
+  /* ---------- NAV ---------- */
+  .topnav{
+    position:sticky; top:0; z-index:50;
+    background:rgba(255,255,255,.92);
+    backdrop-filter:blur(6px);
+    border-bottom:1px solid var(--line);
+  }
+  .topnav-inner{
+    max-width:980px; margin:0 auto; padding:0 28px;
+    display:flex; align-items:center; gap:22px;
+    height:56px; overflow-x:auto; white-space:nowrap;
+  }
+  .topnav-brand{font-family:var(--serif); font-size:1.05rem; color:var(--navy); flex:0 0 auto; padding-right:6px; border-right:1px solid var(--line); margin-right:4px;}
+  .topnav a{
+    font-size:.82rem; color:var(--slate); text-decoration:none; font-weight:600;
+    letter-spacing:.01em;
+  }
+  .topnav a:hover{color:var(--blue);}
+
+  /* ---------- HERO ---------- */
+  .hero{
+    background:linear-gradient(180deg, var(--navy) 0%, var(--navy-soft) 100%);
+    color:#fff; padding:76px 0 60px 0;
+  }
+  .hero .wrap{max-width:820px;}
+  .hero .kicker{color:#8FB3E8; font-size:.9rem; font-weight:600; margin-bottom:14px;}
+  .hero h1{color:#fff; font-size:2.6rem; line-height:1.18; margin-bottom:20px;}
+  .hero p.lead{color:#C9D9EE; font-size:1.08rem; max-width:640px;}
+  .hero-stats{display:flex; gap:34px; margin-top:34px; flex-wrap:wrap;}
+  .hero-stat b{display:block; font-family:var(--serif); font-size:1.6rem; color:#fff;}
+  .hero-stat span{color:#9BB6D9; font-size:.82rem;}
+
+  /* ---------- SECTIONS ---------- */
+  section.mod{padding:56px 0; border-bottom:1px solid var(--line);}
+  section.mod.alt{background:var(--ice);}
+  .mod-head{display:flex; align-items:baseline; gap:14px; margin-bottom:8px;}
+  .mod-num{font-family:var(--serif); font-size:1.1rem; color:var(--blue); flex:0 0 auto;}
+  .mod-head h2{font-size:1.6rem;}
+  .mod-sub{color:var(--slate); max-width:680px; margin-bottom:30px;}
+
+  .card{
+    background:#fff; border:1px solid var(--line); border-radius:var(--radius-m);
+    padding:22px 24px; margin-bottom:16px;
+  }
+  .card h3{font-size:1.08rem; margin-bottom:8px;}
+  .card h3 small{display:block; font-family:var(--sans); font-size:.72rem; color:var(--blue); font-weight:700; letter-spacing:.03em; margin-bottom:4px;}
+
+  .grid2{display:grid; grid-template-columns:1fr 1fr; gap:16px;}
+  .grid3{display:grid; grid-template-columns:1fr 1fr 1fr; gap:16px;}
+  @media (max-width:760px){ .grid2,.grid3{grid-template-columns:1fr;} .hero h1{font-size:2rem;} .grid-calc{grid-template-columns:1fr !important;} }
+
+  /* ---------- PIPELINE (6 touches) ---------- */
+  .pipeline{position:relative; padding-left:34px; margin-top:10px;}
+  .pipeline::before{content:""; position:absolute; left:13px; top:6px; bottom:6px; width:2px; background:var(--line);}
+  .touch{position:relative; margin-bottom:22px;}
+  .touch::before{
+    content:attr(data-n); position:absolute; left:-34px; top:0;
+    width:28px; height:28px; border-radius:50%; background:var(--blue); color:#fff;
+    font-size:.78rem; font-weight:700; display:flex; align-items:center; justify-content:center;
+  }
+  .touch h4{font-size:1.02rem; margin-bottom:4px; color:var(--navy);}
+  .touch p{margin-bottom:0;}
+
+  /* ---------- CHECKLIST ---------- */
+  .checklist-block{background:#fff; border:1px solid var(--line); border-radius:var(--radius-m); padding:20px 22px; margin-bottom:16px;}
+  .checklist-block h4{font-size:.95rem; color:var(--navy); margin-bottom:10px;}
+  .citem{display:flex; align-items:flex-start; gap:10px; padding:7px 0; border-top:1px solid #F0F3F8;}
+  .citem:first-of-type{border-top:none;}
+  .citem input{margin-top:3px; width:16px; height:16px; accent-color:var(--blue); flex:0 0 auto; cursor:pointer;}
+  .citem label{font-size:.92rem; color:var(--ink); cursor:pointer;}
+  .citem.done label{color:#9AA9BC; text-decoration:line-through;}
+  .progress-wrap{display:flex; align-items:center; gap:10px; margin:6px 0 26px 0;}
+  .progress-bar{flex:1; height:8px; background:var(--ice-2); border-radius:5px; overflow:hidden;}
+  .progress-fill{height:100%; background:var(--blue); width:0%; transition:width .35s ease;}
+  .progress-label{font-size:.78rem; color:var(--slate); font-weight:600; min-width:80px; text-align:right;}
+
+  /* ---------- TEMPLATES / FILL-IN ---------- */
+  .tpl{background:#fff; border:1px solid var(--line); border-radius:var(--radius-m); overflow:hidden; margin-bottom:18px;}
+  .tpl-head{background:var(--ice-2); padding:10px 18px; display:flex; justify-content:space-between; align-items:center;}
+  .tpl-head span{font-size:.78rem; font-weight:700; color:var(--navy); letter-spacing:.02em;}
+  .tpl-copy{
+    background:var(--blue); color:#fff; border:none; border-radius:var(--radius-s);
+    padding:6px 14px; font-size:.78rem; font-weight:600; cursor:pointer;
+  }
+  .tpl-copy:hover{background:var(--blue-deep);}
+  .tpl-copy.copied{background:var(--good);}
+  .tpl-body{padding:18px;}
+  .tpl-body textarea{
+    width:100%; min-height:96px; border:1px solid var(--line); border-radius:var(--radius-s);
+    padding:12px 14px; font-family:var(--sans); font-size:.92rem; color:var(--ink);
+    resize:vertical; background:#FBFDFF;
+  }
+  .tpl-body textarea:focus{outline:2px solid var(--blue); outline-offset:1px;}
+  .tpl-fields{display:flex; flex-wrap:wrap; gap:10px; margin-bottom:12px;}
+  .tpl-fields .fld{flex:1 1 150px;}
+  .tpl-fields label{display:block; font-size:.72rem; font-weight:700; color:var(--blue); margin-bottom:4px; letter-spacing:.02em;}
+  .tpl-fields input{
+    width:100%; border:1px solid var(--line); border-radius:var(--radius-s); padding:8px 10px;
+    font-size:.85rem; font-family:var(--sans); background:#FBFDFF;
+  }
+  .tpl-fields input:focus{outline:2px solid var(--blue); outline-offset:1px;}
+
+  /* ---------- TAGS ---------- */
+  .tag{display:inline-block; background:var(--ice-2); color:var(--blue-deep); font-size:.7rem; font-weight:700; padding:3px 9px; border-radius:20px; margin-right:6px; letter-spacing:.02em;}
+  .tag.warn{background:var(--warn-bg); color:var(--warn);}
+  .tag.good{background:var(--good-bg); color:var(--good);}
+
+  /* ---------- CALCULATOR ---------- */
+  .calc-box{background:var(--navy); border-radius:var(--radius-m); padding:30px 32px; color:#fff;}
+  .grid-calc{display:grid; grid-template-columns:1fr 1fr; gap:30px;}
+  .calc-field{margin-bottom:16px;}
+  .calc-field label{display:flex; justify-content:space-between; font-size:.8rem; color:#B9CBE6; margin-bottom:6px;}
+  .calc-field label b{color:#fff; font-family:var(--serif); font-weight:400; font-size:.95rem;}
+  .calc-field input[type=range]{width:100%; accent-color:#5B9CF6;}
+  .calc-field input[type=number]{
+    width:90px; background:#12335A; border:1px solid #2E4E76; color:#fff; border-radius:6px; padding:5px 8px; font-size:.85rem;
+  }
+  .calc-out{background:#0D2A4A; border:1px solid #1F416B; border-radius:var(--radius-m); padding:22px 24px;}
+  .calc-out .row{display:flex; justify-content:space-between; align-items:baseline; padding:9px 0; border-top:1px solid #1F416B;}
+  .calc-out .row:first-child{border-top:none;}
+  .calc-out .row span:first-child{font-size:.82rem; color:#9BB6D9;}
+  .calc-out .row span:last-child{font-family:var(--serif); font-size:1.15rem; color:#fff;}
+  .calc-out .row.hero-out span:last-child{font-size:1.7rem; color:#7FB2FF;}
+
+  /* ---------- MISC ---------- */
+  ul.plain{margin:0 0 1em 0; padding-left:20px; color:var(--slate);}
+  ul.plain li{margin-bottom:6px;}
+  .quote{border-left:3px solid var(--blue); padding:4px 0 4px 16px; font-style:italic; color:var(--navy); margin:14px 0;}
+  .callout{background:var(--good-bg); border:1px solid #BFE4D3; border-radius:var(--radius-m); padding:14px 18px; font-size:.88rem; color:#0E6349; margin-bottom:16px;}
+  .callout.caution{background:var(--warn-bg); border-color:#F0D9B0; color:#8A5A0B;}
+  footer{padding:40px 0 60px 0; text-align:center; color:#9AA9BC; font-size:.8rem;}
+</style>
+</head>
+<body>
+
+<nav class="topnav"><div class="topnav-inner">
+  <span class="topnav-brand">Outreach Blueprint</span>
+  <a href="#foundation">1. Foundation</a>
+  <a href="#profile">2. Profile</a>
+  <a href="#pipeline">3. Trust Pipeline</a>
+  <a href="#content">4. Content</a>
+  <a href="#messaging">5. Messaging</a>
+  <a href="#leads">6. Warm Leads</a>
+  <a href="#followup">7. Follow-Up</a>
+  <a href="#scale">8. Scaling</a>
+  <a href="#email">9. Cold Email</a>
+  <a href="#calculator">Revenue Calculator</a>
+  <a href="#checklist">Daily Checklist</a>
+</div></nav>
+
+<header class="hero"><div class="wrap">
+  <div class="kicker">THE ULTIMATE LINKEDIN OUTREACH BLUEPRINT</div>
+  <h1>A step-by-step system for booking meetings that don't feel like cold outreach.</h1>
+  <p class="lead">Built from six proven playbooks — covering trust-building sequences, profile positioning, content strategy, DM psychology, warm-lead systems, AI-scaled personalization and cold email deliverability. Fill in your own details, check off your progress, and calculate what it's worth.</p>
+  <div class="hero-stats">
+    <div class="hero-stat"><b>20–30%</b><span>reply rate with personalized DMs</span></div>
+    <div class="hero-stat"><b>6 touches</b><span>before you ever pitch</span></div>
+    <div class="hero-stat"><b>25–40</b><span>manual DMs / day sustains growth</span></div>
+    <div class="hero-stat"><b>1 post/day</b><span>is enough for visibility</span></div>
+  </div>
+</div></header>
+
+<!-- 1. FOUNDATION -->
+<section class="mod" id="foundation"><div class="wrap">
+  <div class="mod-head"><span class="mod-num">01</span><h2>Foundation: Offer &amp; Audience</h2></div>
+  <p class="mod-sub">Every tactic below fails without this. Targeting "everyone" means reaching no one — precision is what makes personalization possible later.</p>
+
+  <div class="grid2">
+    <div class="card">
+      <h3><small>DEFINE</small>Who exactly you're talking to</h3>
+      <p>Pick one specific audience segment — role, industry, company size, or situation (e.g. "founders and coaches building a business around skills from their 9–5"). The narrower the definition, the easier every message becomes to write and the higher the response rate.</p>
+    </div>
+    <div class="card">
+      <h3><small>VALIDATE</small>Before you scale outreach</h3>
+      <p>Talk to potential customers and study existing offers in the space before pushing volume. This confirms real demand exists and lowers the risk of running a high-volume campaign that nobody wants.</p>
+    </div>
+  </div>
+
+  <div class="tpl">
+    <div class="tpl-head"><span>WORKSHEET · Offer & Audience Clarity</span></div>
+    <div class="tpl-body">
+      <div class="tpl-fields">
+        <div class="fld"><label>Target audience</label><input id="f-audience" placeholder="e.g. B2B SaaS founders, $1–5M ARR"></div>
+        <div class="fld"><label>Their #1 pain point</label><input id="f-pain" placeholder="e.g. inconsistent pipeline"></div>
+        <div class="fld"><label>Your offer in one line</label><input id="f-offer" placeholder="e.g. Done-for-you outbound system"></div>
+        <div class="fld"><label>Proof / social proof point</label><input id="f-proof" placeholder="e.g. booked 40 meetings for a client in 60 days"></div>
+      </div>
+      <p style="margin:0; font-size:.82rem; color:var(--slate);">These four fields auto-fill every template further down the page — fill them in once.</p>
+    </div>
+  </div>
+</div></section>
+
+<!-- 2. PROFILE -->
+<section class="mod alt" id="profile"><div class="wrap">
+  <div class="mod-head"><span class="mod-num">02</span><h2>Profile Optimization</h2></div>
+  <p class="mod-sub">Your profile is not a résumé — it's a landing page. Every visitor generated by later steps lands here first, and a weak profile can quietly kill an otherwise perfect outreach sequence.</p>
+
+  <div class="checklist-block" data-group="profile">
+    <h4>Profile checklist</h4>
+    <div class="citem"><input type="checkbox"><label>Headline states who you help and how — not just your job title (e.g. "Helping RevOps teams turn customers into case studies")</label></div>
+    <div class="citem"><input type="checkbox"><label>Profile photo is open, friendly, and approachable</label></div>
+    <div class="citem"><input type="checkbox"><label>Banner image reinforces your value proposition with a clear call-to-action</label></div>
+    <div class="citem"><input type="checkbox"><label>"About" section speaks to visitor benefit, not a career history list</label></div>
+    <div class="citem"><input type="checkbox"><label>Featured section includes proof: case study, testimonial, or free resource</label></div>
+    <div class="citem"><input type="checkbox"><label>You're already connected to several people inside the same target companies (builds social legitimacy before you reach out)</label></div>
+  </div>
+  <div class="progress-wrap"><div class="progress-bar"><div class="progress-fill" id="pf-profile"></div></div><span class="progress-label" id="pl-profile">0 / 6</span></div>
+</div></section>
+
+<!-- 3. TRUST PIPELINE -->
+<section class="mod" id="pipeline"><div class="wrap">
+  <div class="mod-head"><span class="mod-num">03</span><h2>The Six-Touch Trust Pipeline</h2></div>
+  <p class="mod-sub">Outreach fails when it's treated as a single event — one message to a stranger, usually ignored. This sequence builds recognition <em>before</em> you ever ask for anything, so the eventual message lands as familiar rather than cold.</p>
+
+  <div class="pipeline">
+    <div class="touch" data-n="1"><h4>Profile visit</h4><p>A quiet first touch. Many people check who viewed their profile — this alone plants the first seed of recognition.</p></div>
+    <div class="touch" data-n="2"><h4>Like a recent post</h4><p>Low-effort, but it puts your name in front of them a second time before any message is sent.</p></div>
+    <div class="touch" data-n="3"><h4>Leave a thoughtful comment</h4><p>Add real value or ask a relevant question — generic "Great post!" comments read as low-effort. A specific, useful comment reads as professional and memorable.</p></div>
+    <div class="touch" data-n="4"><h4>Engage with their company page</h4><p>Interacting with the prospect's company content increases your visibility across their wider network, not just to the individual.</p></div>
+    <div class="touch" data-n="5"><h4>Send a personalized connection request</h4><p>By now your name has appeared three or four times. The request references something specific from their profile — not a copy-pasted line — and plants interest without selling.</p></div>
+    <div class="touch" data-n="6"><h4>Follow up with a cold email</h4><p>LinkedIn built the warm introduction; email now delivers a more targeted, detailed message. Running both channels together measurably outperforms LinkedIn alone.</p></div>
+  </div>
+
+  <div class="tpl">
+    <div class="tpl-head"><span>TEMPLATE · Personalized connection request</span><button class="tpl-copy" data-target="ta-connect">Copy</button></div>
+    <div class="tpl-body">
+      <textarea id="ta-connect">Hi {{first_name}}, I came across your post on {{topic}} and really liked your take on {{specific_detail}}. I work with {{audience}} on {{pain}} — would be great to connect.</textarea>
+    </div>
+  </div>
+</div></section>
+
+<!-- 4. CONTENT -->
+<section class="mod alt" id="content"><div class="wrap">
+  <div class="mod-head"><span class="mod-num">04</span><h2>Content Strategy</h2></div>
+  <p class="mod-sub">Content is what makes the trust pipeline believable — it's the evidence behind every profile visit and comment. Consistency beats frequency: three well-made posts a week outperform daily filler.</p>
+
+  <div class="grid3">
+    <div class="card"><h3><small>FORMULA</small>Pain → Solution → Why</h3><p>Every post names a real pain point of your audience, offers a practical solution, and explains why that solution actually matters. This structure alone increases resonance and engagement.</p></div>
+    <div class="card"><h3><small>PILLARS</small>Educate · Engage · Entertain · Empower</h3><p>Rotate your posts across these four jobs. Repeating the same core topics ("content pillars") in different formats reinforces your authority instead of diluting it.</p></div>
+    <div class="card"><h3><small>HOOK</small>The first line is a scroll-stopper</h3><p>People scroll fast and selectively. Open with a number, a question, or an unexpected claim — and speak to a specific role for higher relevance and click-through on "see more."</p></div>
+  </div>
+
+  <div class="checklist-block" data-group="content">
+    <h4>Content operating checklist</h4>
+    <div class="citem"><input type="checkbox"><label>Post at minimum 1x/day (or 3x/week) — plain text or a simple image is enough</label></div>
+    <div class="citem"><input type="checkbox"><label>Each post follows Pain → Solution → Why</label></div>
+    <div class="citem"><input type="checkbox"><label>Opening line is a hook (number, question, or bold claim)</label></div>
+    <div class="citem"><input type="checkbox"><label>Reply to every comment within the first 90 minutes of posting — this window drives the algorithm's reach</label></div>
+    <div class="citem"><input type="checkbox"><label>At least one post per week uses video or a personal photo as a pattern interrupt</label></div>
+    <div class="citem"><input type="checkbox"><label>Review last week's post performance and adjust before batching the next ones — never batch-post blind</label></div>
+  </div>
+  <div class="progress-wrap"><div class="progress-bar"><div class="progress-fill" id="pf-content"></div></div><span class="progress-label" id="pl-content">0 / 6</span></div>
+
+  <div class="tpl">
+    <div class="tpl-head"><span>TEMPLATE · Pain-Solution-Why post skeleton</span><button class="tpl-copy" data-target="ta-post">Copy</button></div>
+    <div class="tpl-body">
+      <textarea id="ta-post">{{hook_line}}
+
+Most {{audience}} struggle with {{pain}}.
+
+Here's what actually works: {{solution}}
+
+Why it matters: {{why_it_matters}}
+
+{{closing_cta_or_question}}</textarea>
+    </div>
+  </div>
+</div></section>
+
+<!-- 5. MESSAGING -->
+<section class="mod" id="messaging"><div class="wrap">
+  <div class="mod-head"><span class="mod-num">05</span><h2>DM Messaging Rules</h2></div>
+  <p class="mod-sub">LinkedIn DMs have no spam filter once you're connected — but most sales messages still get ignored because they read as generic, pushy, or too sales-heavy. These rules consistently produce 20–30% reply rates.</p>
+
+  <div class="grid2">
+    <div class="card"><h3>Write like a text, not an email</h3><p>Keep it to 1–2 sentences, reference something specific and current, and ask an open (not yes/no-only) question that invites a reply.</p></div>
+    <div class="card"><h3>One question per message</h3><p>Multiple questions raise the cognitive effort required to reply. A single, focused, ideally binary-leaning question lowers the barrier to respond.</p></div>
+    <div class="card"><h3>Specific personalization only</h3><p>Surface-level compliments read as inattentive. Reference a recent post, a role change, or a concrete challenge — 30–60 seconds of profile research before every message.</p></div>
+    <div class="card"><h3>Mirror their communication style</h3><p>Short, fast replies deserve an equally brief response; formal, longer messages deserve a more thorough, polite one. People feel understood by tone and pace, not just content.</p></div>
+    <div class="card"><h3>Lead with value, not a pitch</h3><p>Share a useful insight or a piece of free help relevant to their specific problem before asking for anything.</p></div>
+    <div class="card"><h3>End with one small next step</h3><p>Vague conversations lose momentum. Close with a concrete, low-friction next step — a specific time, a clear deliverable, a simple question.</p></div>
+  </div>
+
+  <div class="tpl">
+    <div class="tpl-head"><span>TEMPLATE · First DM after connecting</span><button class="tpl-copy" data-target="ta-dm1">Copy</button></div>
+    <div class="tpl-body">
+      <textarea id="ta-dm1">Hey {{first_name}} — noticed {{specific_observation}}. Have you already got a strategy in place for {{pain}}, or is that still on the to-do list?</textarea>
+    </div>
+  </div>
+
+  <div class="tpl">
+    <div class="tpl-head"><span>TEMPLATE · Value-first outreach message</span><button class="tpl-copy" data-target="ta-dm2">Copy</button></div>
+    <div class="tpl-body">
+      <textarea id="ta-dm2">Hi {{first_name}}, saw {{specific_detail}} — thought this might be useful: {{free_insight_or_resource}}. Curious how you're currently handling {{pain}}?</textarea>
+    </div>
+  </div>
+
+  <div class="callout"><strong>Volume:</strong> ~25–40 personalized DMs per day, sent manually, sustained daily, consistently outperforms occasional bursts of automated volume.</div>
+</div></section>
+
+<!-- 6. WARM LEADS -->
+<section class="mod alt" id="leads"><div class="wrap">
+  <div class="mod-head"><span class="mod-num">06</span><h2>The Warm-Lead System</h2></div>
+  <p class="mod-sub">Instead of cold-messaging strangers, work three lead pools that already show interest. This alone dramatically improves conversion versus pure cold outreach.</p>
+
+  <div class="grid3">
+    <div class="card"><h3><small>POOL 1</small>New connections</h3><p>People who send you a connection request. Review each one — only engage the ones that actually match your target audience.</p></div>
+    <div class="card"><h3><small>POOL 2</small>Post engagers</h3><p>Anyone who likes or comments on your content. Engagement is a signal of interest — check their profile and reach out if they fit.</p></div>
+    <div class="card"><h3><small>POOL 3</small>Profile visitors</h3><p>People who viewed your profile. A visit means curiosity already exists — that's a warmer starting point than any cold list.</p></div>
+  </div>
+
+  <div class="card">
+    <h3>Manual over automation</h3>
+    <p>Automation tools are often rate-limited (e.g. one connection every 20 minutes) and strip out the personal feel that makes messages land. With practice, manually messaging ~40 well-targeted people per hour is realistic — and converts noticeably better than automated blasts.</p>
+  </div>
+
+  <div class="checklist-block" data-group="leads">
+    <h4>Daily warm-lead routine</h4>
+    <div class="citem"><input type="checkbox"><label>Review and respond to new connection requests</label></div>
+    <div class="citem"><input type="checkbox"><label>Check who liked/commented on yesterday's post — message qualified fits</label></div>
+    <div class="citem"><input type="checkbox"><label>Check profile-visitor list — message qualified fits</label></div>
+    <div class="citem"><input type="checkbox"><label>Organize active leads by funnel stage in Sales Navigator (or equivalent) so nothing is missed</label></div>
+  </div>
+  <div class="progress-wrap"><div class="progress-bar"><div class="progress-fill" id="pf-leads"></div></div><span class="progress-label" id="pl-leads">0 / 4</span></div>
+</div></section>
+
+<!-- 7. FOLLOW UP -->
+<section class="mod" id="followup"><div class="wrap">
+  <div class="mod-head"><span class="mod-num">07</span><h2>Follow-Up &amp; Pattern Interrupts</h2></div>
+  <p class="mod-sub">Most interested people don't reply on the first message — they're busy or distracted, not uninterested. Persistent, varied follow-up is where most of the booked meetings actually come from.</p>
+
+  <div class="grid2">
+    <div class="card"><h3>Voice notes</h3><p>A voice message signals effort and personality, building trust faster than text. Especially effective as a follow-up to non-responders or as an initial touch with active, engaged users.</p></div>
+    <div class="card"><h3>Video DMs</h3><p>A short, personal video is a strong pattern interrupt — it's harder to automate, shows real interest, and builds trust quickly through non-verbal cues. Best used with hot leads, re-engagements, or lost conversations.</p></div>
+  </div>
+
+  <div class="checklist-block" data-group="followup">
+    <h4>Follow-up cadence</h4>
+    <div class="citem"><input type="checkbox"><label>Message 1 (Day 0): personalized text DM</label></div>
+    <div class="citem"><input type="checkbox"><label>Message 2 (Day 2–3): different angle or added value, still text</label></div>
+    <div class="citem"><input type="checkbox"><label>Message 3 (Day 5–7): voice note follow-up</label></div>
+    <div class="citem"><input type="checkbox"><label>Message 4 (Day 10+): short video message as a final pattern interrupt</label></div>
+    <div class="citem"><input type="checkbox"><label>No response after 4 touches → move to nurture via content, not further cold pushes</label></div>
+  </div>
+  <div class="progress-wrap"><div class="progress-bar"><div class="progress-fill" id="pf-followup"></div></div><span class="progress-label" id="pl-followup">0 / 5</span></div>
+
+  <div class="tpl">
+    <div class="tpl-head"><span>TEMPLATE · Follow-up after silence</span><button class="tpl-copy" data-target="ta-fu">Copy</button></div>
+    <div class="tpl-body">
+      <textarea id="ta-fu">Hey {{first_name}}, know things get buried — still curious how you're approaching {{pain}}. Happy to send over {{free_insight_or_resource}} if useful, no pressure either way.</textarea>
+    </div>
+  </div>
+</div></section>
+
+<!-- 8. SCALING -->
+<section class="mod alt" id="scale"><div class="wrap">
+  <div class="mod-head"><span class="mod-num">08</span><h2>Scaling With AI (Advanced Layer)</h2></div>
+  <p class="mod-sub">Once the manual system is proven and converting, AI can multiply volume without losing personalization — this is an amplifier for a working system, not a replacement for the fundamentals above.</p>
+
+  <div class="grid2">
+    <div class="card"><h3>AI-personalized messaging</h3><p>AI text generation lets you send hundreds to thousands of individually-relevant messages in the time manual writing would take for a fraction of that volume.</p></div>
+    <div class="card"><h3>"Big Fast Value"</h3><p>Lead with a genuinely valuable free asset — a strategy, audit, or template — before any pitch. This reframes outreach from a pitch into a trust-based relationship and positions you as a real expert.</p></div>
+    <div class="card"><h3>Voice cloning for scaled voice notes</h3><p>AI-assisted voice cloning allows personalized-sounding voice messages at volume — an underused channel that stands out precisely because it's rare in most inboxes.</p></div>
+    <div class="card"><h3>Multi-account scaling</h3><p>Running outreach across several LinkedIn profiles (including teammates') and automating the coordination can multiply contact volume significantly with proportionally less manual overhead.</p></div>
+  </div>
+  <div class="callout caution"><strong>Balance point:</strong> the advantage isn't volume alone or personalization alone — it's combining both. Over-automated, robotic-sounding messages undermine the authenticity that makes this whole system work in the first place.</div>
+</div></section>
+
+<!-- 9. COLD EMAIL -->
+<section class="mod" id="email"><div class="wrap">
+  <div class="mod-head"><span class="mod-num">09</span><h2>Cold Email as a Companion Channel</h2></div>
+  <p class="mod-sub">LinkedIn builds the warm introduction; email adds a second, more detailed touch. Running both together measurably beats either channel alone — but email has its own strict technical rules.</p>
+
+  <div class="grid2">
+    <div class="card"><h3>Think long-term, not campaign-by-campaign</h3><p>Cold email is a marathon, not a single blast — build a repeatable, scalable pipeline maintained over months, not a one-off list send.</p></div>
+    <div class="card"><h3>Relevance beats list size</h3><p>A huge list underperforms a smaller, well-segmented one where messages speak directly to the recipient's actual problem.</p></div>
+    <div class="card"><h3>Keep it short and human</h3><p>Under ~100 words, one clear call-to-action, plain human language — short emails consistently outperform long, complex ones.</p></div>
+    <div class="card"><h3>Track positive replies, not opens</h3><p>Open rates are noisy. The metric that actually matters is genuinely interested replies — build your reporting around that number.</p></div>
+  </div>
+
+  <div class="checklist-block" data-group="email">
+    <h4>Technical deliverability checklist</h4>
+    <div class="citem"><input type="checkbox"><label>Verify every email address before sending to minimize bounce and spam complaints</label></div>
+    <div class="citem"><input type="checkbox"><label>Avoid known spam trigger words in subject lines and body copy</label></div>
+    <div class="citem"><input type="checkbox"><label>Send as plain text — skip attachments, external links, and embedded calendar tools in the first email</label></div>
+    <div class="citem"><input type="checkbox"><label>Use spin-tax / phrasing variation across sends so messages don't look identical to spam filters</label></div>
+    <div class="citem"><input type="checkbox"><label>Monitor open, reply, and — most importantly — positive-reply rate on every campaign</label></div>
+    <div class="citem"><input type="checkbox"><label>Use AI for drafting support only — always review for a natural, human tone before sending</label></div>
+  </div>
+  <div class="progress-wrap"><div class="progress-bar"><div class="progress-fill" id="pf-email"></div></div><span class="progress-label" id="pl-email">0 / 6</span></div>
+
+  <div class="tpl">
+    <div class="tpl-head"><span>TEMPLATE · Cold email under 100 words</span><button class="tpl-copy" data-target="ta-email">Copy</button></div>
+    <div class="tpl-body">
+      <textarea id="ta-email">Subject: {{pain}} at {{company_name}}?
+
+Hi {{first_name}},
+
+Noticed {{specific_trigger}} — thought it might connect to {{pain}}.
+
+We've helped {{audience}} with exactly that ({{proof}}).
+
+Worth a quick 15-min conversation to see if it's relevant for you too?
+
+{{your_name}}</textarea>
+    </div>
+  </div>
+</div></section>
+
+<!-- CALCULATOR -->
+<section class="mod alt" id="calculator"><div class="wrap">
+  <div class="mod-head"><span class="mod-num">$</span><h2>Revenue Calculator</h2></div>
+  <p class="mod-sub">Model what your outreach volume is actually worth. Adjust the sliders — every output updates live.</p>
+
+  <div class="calc-box">
+    <div class="grid-calc">
+      <div>
+        <div class="calc-field">
+          <label>Outreach volume / day <b id="v-vol">30</b></label>
+          <input type="range" id="in-vol" min="5" max="150" value="30">
+        </div>
+        <div class="calc-field">
+          <label>Working days / month <b id="v-days">22</b></label>
+          <input type="range" id="in-days" min="10" max="30" value="22">
+        </div>
+        <div class="calc-field">
+          <label>Reply rate (%) <b id="v-reply">25</b></label>
+          <input type="range" id="in-reply" min="1" max="60" value="25">
+        </div>
+        <div class="calc-field">
+          <label>Reply → meeting booked rate (%) <b id="v-book">35</b></label>
+          <input type="range" id="in-book" min="1" max="100" value="35">
+        </div>
+      </div>
+      <div>
+        <div class="calc-field">
+          <label>Meeting → client CVR (%) <b id="v-cvr">20</b></label>
+          <input type="range" id="in-cvr" min="1" max="100" value="20">
+        </div>
+        <div class="calc-field">
+          <label>Average Order Value (AOV) $ <input type="number" id="in-aov" value="2500"></label>
+        </div>
+        <div class="calc-field">
+          <label>LTV multiplier (x AOV) <input type="number" id="in-ltv" value="3" step="0.1"></label>
+        </div>
+      </div>
+    </div>
+
+    <div class="calc-out">
+      <div class="row"><span>Contacts reached / month</span><span id="o-contacts">—</span></div>
+      <div class="row"><span>Replies / month</span><span id="o-replies">—</span></div>
+      <div class="row"><span>Meetings booked / month</span><span id="o-meetings">—</span></div>
+      <div class="row"><span>New clients / month</span><span id="o-clients">—</span></div>
+      <div class="row hero-out"><span>Monthly revenue (AOV)</span><span id="o-rev">—</span></div>
+      <div class="row hero-out"><span>Monthly revenue (LTV)</span><span id="o-ltv">—</span></div>
+    </div>
+  </div>
+</div></section>
+
+<!-- CHECKLIST -->
+<section class="mod" id="checklist"><div class="wrap">
+  <div class="mod-head"><span class="mod-num">✓</span><h2>Master Daily / Weekly Checklist</h2></div>
+  <p class="mod-sub">The whole system compressed into one operating rhythm. Do these consistently and the pipeline runs itself.</p>
+
+  <div class="checklist-block" data-group="daily">
+    <h4>Every working day</h4>
+    <div class="citem"><input type="checkbox"><label>Post once (or per your 3x/week schedule) following Pain → Solution → Why</label></div>
+    <div class="citem"><input type="checkbox"><label>Reply to comments on your latest post within 90 minutes</label></div>
+    <div class="citem"><input type="checkbox"><label>Run the trust pipeline (visit → like → comment) on 10–15 new target prospects</label></div>
+    <div class="citem"><input type="checkbox"><label>Send 25–40 personalized connection requests / DMs</label></div>
+    <div class="citem"><input type="checkbox"><label>Work through all 3 warm-lead pools: new connects, engagers, profile visitors</label></div>
+    <div class="citem"><input type="checkbox"><label>Send scheduled follow-ups (text / voice / video) per the cadence</label></div>
+  </div>
+  <div class="progress-wrap"><div class="progress-bar"><div class="progress-fill" id="pf-daily"></div></div><span class="progress-label" id="pl-daily">0 / 6</span></div>
+
+  <div class="checklist-block" data-group="weekly">
+    <h4>Every week</h4>
+    <div class="citem"><input type="checkbox"><label>Review post performance and adjust content plan for next week</label></div>
+    <div class="citem"><input type="checkbox"><label>Review reply rates by message template — retire or rewrite anything underperforming</label></div>
+    <div class="citem"><input type="checkbox"><label>Clean and re-segment your Sales Navigator / CRM lead lists</label></div>
+    <div class="citem"><input type="checkbox"><label>Verify email list health if running the cold-email companion channel</label></div>
+  </div>
+  <div class="progress-wrap"><div class="progress-bar"><div class="progress-fill" id="pf-weekly"></div></div><span class="progress-label" id="pl-weekly">0 / 4</span></div>
+
+  <div class="card">
+    <h3>Common mistakes to avoid</h3>
+    <ul class="plain">
+      <li>Treating outreach as a one-off blast instead of a maintained, repeatable system</li>
+      <li>Targeting "everyone" instead of a precisely defined audience</li>
+      <li>Sending generic, unpersonalized connection requests and messages</li>
+      <li>Asking multiple questions in a single DM</li>
+      <li>Giving up after one message instead of following a structured follow-up cadence</li>
+      <li>Batch-posting content without reviewing performance or improving it</li>
+      <li>Over-relying on automation at the cost of authenticity and response rate</li>
+    </ul>
+  </div>
+</div></section>
+
+<footer>Built from six outreach playbooks · Fill in your details once at the top — every template below updates automatically.</footer>
+
+<script>
+// ---------- autofill placeholders from foundation worksheet ----------
+const fmap = {audience:'f-audience', pain:'f-pain', offer:'f-offer', proof:'f-proof'};
+function currentVals(){
+  return {
+    audience: document.getElementById('f-audience').value || '{{audience}}',
+    pain: document.getElementById('f-pain').value || '{{pain}}',
+    offer: document.getElementById('f-offer').value || '{{offer}}',
+    proof: document.getElementById('f-proof').value || '{{proof}}'
+  };
+}
+function applyAutofill(){
+  const v = currentVals();
+  document.querySelectorAll('textarea').forEach(ta=>{
+    if(!ta.dataset.orig) ta.dataset.orig = ta.value;
+    let t = ta.dataset.orig;
+    t = t.replaceAll('{{audience}}', v.audience);
+    t = t.replaceAll('{{pain}}', v.pain);
+    t = t.replaceAll('{{proof}}', v.proof);
+    if(document.activeElement !== ta){ ta.value = t; }
+  });
+}
+Object.values(fmap).forEach(id=>{
+  document.getElementById(id).addEventListener('input', applyAutofill);
+});
+
+// ---------- copy buttons ----------
+document.querySelectorAll('.tpl-copy').forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    const ta = document.getElementById(btn.dataset.target);
+    navigator.clipboard.writeText(ta.value).then(()=>{
+      const orig = btn.textContent;
+      btn.textContent = 'Copied!';
+      btn.classList.add('copied');
+      setTimeout(()=>{ btn.textContent = orig; btn.classList.remove('copied'); }, 1500);
+    }).catch(()=>{
+      ta.select();
+      document.execCommand('copy');
+    });
+  });
+});
+
+// ---------- checklists ----------
+document.querySelectorAll('.checklist-block').forEach(block=>{
+  const group = block.dataset.group;
+  const items = block.querySelectorAll('.citem input');
+  const fill = document.getElementById('pf-'+group);
+  const label = document.getElementById('pl-'+group);
+  function update(){
+    let done = 0;
+    items.forEach(i=>{
+      i.closest('.citem').classList.toggle('done', i.checked);
+      if(i.checked) done++;
+    });
+    if(fill){ fill.style.width = (done/items.length*100)+'%'; }
+    if(label){ label.textContent = done+' / '+items.length; }
+  }
+  items.forEach(i=> i.addEventListener('change', update));
+  update();
+});
+
+// ---------- calculator ----------
+const ids = ['vol','days','reply','book','cvr'];
+const inputs = {};
+ids.forEach(id=>{ inputs[id] = document.getElementById('in-'+id); });
+const aovInput = document.getElementById('in-aov');
+const ltvInput = document.getElementById('in-ltv');
+
+function calc(){
+  ids.forEach(id=>{
+    const el = document.getElementById('v-'+id);
+    if(el) el.textContent = inputs[id].value;
+  });
+  const vol = +inputs.vol.value;
+  const days = +inputs.days.value;
+  const reply = +inputs.reply.value/100;
+  const book = +inputs.book.value/100;
+  const cvr = +inputs.cvr.value/100;
+  const aov = +aovInput.value || 0;
+  const ltvMult = +ltvInput.value || 0;
+
+  const contacts = vol*days;
+  const replies = contacts*reply;
+  const meetings = replies*book;
+  const clients = meetings*cvr;
+  const rev = clients*aov;
+  const ltvRev = rev*ltvMult;
+
+  document.getElementById('o-contacts').textContent = Math.round(contacts).toLocaleString();
+  document.getElementById('o-replies').textContent = Math.round(replies).toLocaleString();
+  document.getElementById('o-meetings').textContent = Math.round(meetings).toLocaleString();
+  document.getElementById('o-clients').textContent = Math.round(clients*10)/10;
+  document.getElementById('o-rev').textContent = '$'+Math.round(rev).toLocaleString();
+  document.getElementById('o-ltv').textContent = '$'+Math.round(ltvRev).toLocaleString();
+}
+[...ids.map(id=>inputs[id]), aovInput, ltvInput].forEach(el=> el.addEventListener('input', calc));
+calc();
+</script>
+
+</body>
+</html>
