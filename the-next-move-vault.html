@@ -1,0 +1,1109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Next Move™ Vault — Strategic Decision Library</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--navy:#0F172A;--slate:#1E293B;--slate-mid:#334155;--gold:#C9A227;--gold-light:#E8C96E;--white:#F8FAFC;--g100:#E2E8F0;--g200:#CBD5E1;--g400:#94A3B8;--g600:#64748B;--green:#15803D;--amber:#B45309;--red:#B91C1C;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Inter',sans-serif;background:var(--navy);color:var(--white);min-height:100vh;}
+#cover{min-height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:60px 40px;background:var(--navy);}
+.cover-eyebrow{font-size:11px;font-weight:600;letter-spacing:.25em;color:var(--gold);text-transform:uppercase;margin-bottom:24px;}
+.cover-title{font-family:'Playfair Display',serif;font-size:clamp(52px,9vw,100px);font-weight:700;line-height:1;color:var(--white);margin-bottom:12px;}
+.cover-tm{font-family:'Inter',sans-serif;font-size:16px;color:var(--gold);vertical-align:super;}
+.cover-sub{font-family:'Playfair Display',serif;font-size:clamp(15px,2.5vw,20px);font-style:italic;color:var(--g400);margin-bottom:48px;max-width:520px;}
+.cover-div{width:60px;height:1px;background:var(--gold);margin:0 auto 48px;}
+.vol-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;max-width:780px;width:100%;margin-bottom:56px;}
+.vol-pill{background:rgba(255,255,255,.04);border:1px solid rgba(201,162,39,.3);border-radius:4px;padding:14px 12px;cursor:pointer;transition:all .2s;text-align:center;}
+.vol-pill:hover{background:rgba(201,162,39,.12);border-color:var(--gold);transform:translateY(-2px);}
+.vol-pill .vl{font-size:9px;font-weight:700;letter-spacing:.15em;color:var(--gold);text-transform:uppercase;display:block;margin-bottom:4px;}
+.vol-pill .vn{font-family:'Playfair Display',serif;font-size:14px;font-weight:600;color:var(--white);}
+.cover-cta{background:var(--gold);color:var(--navy);border:none;padding:15px 36px;font-family:'Inter',sans-serif;font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;cursor:pointer;transition:all .2s;border-radius:3px;}
+.cover-cta:hover{background:var(--gold-light);}
+#nav{display:none;position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(15,23,42,.97);border-bottom:1px solid rgba(201,162,39,.2);padding:0 28px;height:54px;align-items:center;justify-content:space-between;}
+#nav.visible{display:flex;}
+.nav-brand{font-family:'Playfair Display',serif;font-size:17px;font-weight:700;color:var(--white);cursor:pointer;}
+.nav-brand span{color:var(--gold);}
+.nav-vols{display:flex;gap:2px;}
+.nvb{background:none;border:none;padding:6px 12px;font-family:'Inter',sans-serif;font-size:12px;font-weight:500;color:var(--g400);cursor:pointer;border-radius:3px;transition:all .15s;}
+.nvb:hover{color:var(--white);background:rgba(255,255,255,.06);}
+.nvb.active{color:var(--gold);}
+#app{display:none;}
+#app.visible{display:block;}
+.vwrap{display:none;padding-top:54px;}
+.vwrap.active{display:block;}
+.vhdr{background:var(--slate);border-bottom:1px solid rgba(201,162,39,.2);padding:44px 60px;position:relative;overflow:hidden;}
+.vhdr::after{content:attr(data-roman);position:absolute;right:44px;top:50%;transform:translateY(-50%);font-family:'Playfair Display',serif;font-size:110px;font-weight:700;color:rgba(201,162,39,.07);line-height:1;pointer-events:none;}
+.vhdr-ey{font-size:10px;font-weight:700;letter-spacing:.25em;color:var(--gold);text-transform:uppercase;margin-bottom:12px;}
+.vhdr-t{font-family:'Playfair Display',serif;font-size:clamp(30px,5vw,54px);font-weight:700;color:var(--white);line-height:1.1;margin-bottom:8px;}
+.vhdr-s{font-size:14px;color:var(--g400);font-style:italic;margin-bottom:20px;}
+.vhdr-d{font-size:14px;color:var(--g200);max-width:620px;line-height:1.7;}
+.chnav{background:var(--navy);border-bottom:1px solid rgba(255,255,255,.06);padding:0 60px;display:flex;gap:0;overflow-x:auto;}
+.chnav::-webkit-scrollbar{display:none;}
+.chtab{background:none;border:none;border-bottom:2px solid transparent;padding:13px 18px;font-family:'Inter',sans-serif;font-size:12px;font-weight:500;color:var(--g600);cursor:pointer;white-space:nowrap;transition:all .15s;}
+.chtab:hover{color:var(--g200);}
+.chtab.active{color:var(--gold);border-bottom-color:var(--gold);}
+.chcon{display:none;max-width:880px;margin:0 auto;padding:52px 60px;}
+.chcon.active{display:block;}
+.ch-ey{font-size:10px;font-weight:700;letter-spacing:.25em;color:var(--gold);text-transform:uppercase;margin-bottom:14px;}
+.ch-t{font-family:'Playfair Display',serif;font-size:clamp(26px,4vw,40px);font-weight:700;color:var(--white);line-height:1.15;margin-bottom:8px;}
+.ch-s{font-family:'Playfair Display',serif;font-size:17px;font-style:italic;color:var(--g400);margin-bottom:28px;}
+.ch-lead{font-size:16px;color:var(--g200);line-height:1.8;margin-bottom:36px;border-left:3px solid var(--gold);padding-left:18px;}
+.sec-t{font-family:'Playfair Display',serif;font-size:21px;font-weight:600;color:var(--white);margin:44px 0 18px;}
+.sec-t::after{content:'';display:block;width:28px;height:2px;background:var(--gold);margin-top:7px;}
+p{font-size:14px;color:var(--g200);line-height:1.8;margin-bottom:14px;}
+strong{color:var(--white);font-weight:600;}
+.ibox{background:rgba(201,162,39,.08);border:1px solid rgba(201,162,39,.3);border-radius:6px;padding:18px 22px;margin:22px 0;}
+.ibox .bl{font-size:10px;font-weight:700;letter-spacing:.2em;color:var(--gold);text-transform:uppercase;margin-bottom:9px;}
+.ibox p{margin:0;color:var(--g100);font-size:13px;}
+.wbox{background:rgba(180,83,9,.1);border:1px solid rgba(180,83,9,.4);border-radius:6px;padding:18px 22px;margin:22px 0;}
+.wbox .bl{font-size:10px;font-weight:700;letter-spacing:.2em;color:var(--amber);text-transform:uppercase;margin-bottom:9px;}
+.wbox p{margin:0;color:var(--g100);font-size:13px;}
+.rbox{background:rgba(29,78,216,.08);border:1px solid rgba(29,78,216,.25);border-radius:6px;padding:18px 22px;margin:22px 0;}
+.rbox .bl{font-size:10px;font-weight:700;letter-spacing:.2em;color:#60A5FA;text-transform:uppercase;margin-bottom:10px;}
+.rbox .rq{font-size:13px;color:var(--g200);margin-bottom:8px;padding-left:12px;border-left:2px solid rgba(96,165,250,.4);line-height:1.6;}
+.csbox{background:rgba(21,128,61,.07);border:1px solid rgba(21,128,61,.25);border-radius:6px;padding:18px 22px;margin:22px 0;}
+.csbox .bl{font-size:10px;font-weight:700;letter-spacing:.2em;color:var(--green);text-transform:uppercase;margin-bottom:9px;}
+.csbox p{margin-bottom:7px;font-size:13px;}
+.cgrid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:22px 0;}
+.ccard{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);border-radius:6px;padding:18px;}
+.ccard.win{border-color:rgba(201,162,39,.45);background:rgba(201,162,39,.05);}
+.ccard h4{font-family:'Playfair Display',serif;font-size:17px;font-weight:600;color:var(--white);margin-bottom:10px;}
+.ccard.win h4{color:var(--gold);}
+.ccard ul{list-style:none;}
+.ccard ul li{font-size:12px;color:var(--g200);padding:4px 0;border-bottom:1px solid rgba(255,255,255,.04);display:flex;align-items:flex-start;gap:7px;line-height:1.5;}
+.ccard ul li:last-child{border-bottom:none;}
+.ccard ul li::before{content:'↗';color:var(--green);font-size:10px;flex-shrink:0;margin-top:2px;}
+.ccard.neg ul li::before{content:'↙';color:var(--red);}
+.rtable{width:100%;border-collapse:collapse;margin:22px 0;font-size:12px;}
+.rtable th{background:var(--slate);color:var(--gold);font-weight:600;font-size:10px;letter-spacing:.1em;text-transform:uppercase;padding:11px 14px;text-align:left;border-bottom:1px solid rgba(201,162,39,.3);}
+.rtable td{padding:10px 14px;color:var(--g200);border-bottom:1px solid rgba(255,255,255,.04);}
+.rtable tr:hover td{background:rgba(255,255,255,.02);}
+.g{color:var(--green);font-weight:600;}
+.b{color:var(--red);}
+.m{color:var(--amber);}
+.sc{background:var(--slate);border:1px solid rgba(255,255,255,.08);border-radius:8px;padding:26px;margin:28px 0;}
+.sc h3{font-family:'Playfair Display',serif;font-size:19px;font-weight:600;color:var(--white);margin-bottom:5px;}
+.sc .scsub{font-size:12px;color:var(--g600);margin-bottom:22px;}
+.srow{display:grid;grid-template-columns:1fr auto;align-items:center;gap:14px;padding:9px 0;border-bottom:1px solid rgba(255,255,255,.04);}
+.srow:last-child{border-bottom:none;}
+.slbl{font-size:13px;color:var(--g200);}
+.sinp{display:flex;gap:8px;align-items:center;}
+.sinp input[type=range]{width:90px;accent-color:var(--gold);}
+.sval{font-size:13px;font-weight:700;color:var(--gold);min-width:18px;text-align:right;}
+.stot{display:flex;justify-content:space-between;align-items:center;margin-top:18px;padding-top:14px;border-top:1px solid rgba(201,162,39,.3);}
+.stot .sl{font-size:12px;font-weight:600;color:var(--g400);}
+.stot .sv{font-family:'Playfair Display',serif;font-size:26px;font-weight:700;color:var(--gold);}
+.sverd{font-size:12px;color:var(--g400);font-style:italic;margin-top:6px;text-align:right;}
+.mwrap{margin:28px 0;overflow-x:auto;}
+.dmat{width:100%;border-collapse:collapse;font-size:12px;}
+.dmat th{background:var(--slate);color:var(--gold);font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:11px 12px;text-align:center;border:1px solid rgba(255,255,255,.06);}
+.dmat th:first-child{text-align:left;}
+.dmat td{padding:10px 12px;border:1px solid rgba(255,255,255,.04);color:var(--g200);text-align:center;}
+.dmat td:first-child{text-align:left;font-weight:500;color:var(--white);}
+.dmat tr:hover td{background:rgba(255,255,255,.02);}
+.ws{background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.07);border-radius:8px;padding:26px;margin:28px 0;}
+.ws h3{font-family:'Playfair Display',serif;font-size:19px;font-weight:600;color:var(--white);margin-bottom:5px;}
+.ws .wssub{font-size:12px;color:var(--g600);margin-bottom:22px;}
+.fi{margin-bottom:18px;}
+.fi label{display:block;font-size:11px;font-weight:600;color:var(--g400);letter-spacing:.08em;text-transform:uppercase;margin-bottom:7px;}
+.fi textarea{width:100%;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:4px;padding:11px 13px;font-family:'Inter',sans-serif;font-size:13px;color:var(--white);outline:none;transition:border-color .15s;resize:vertical;}
+.fi textarea:focus{border-color:rgba(201,162,39,.5);}
+.fi textarea::placeholder{color:var(--g600);}
+.cl{margin:22px 0;list-style:none;}
+.cl li{display:flex;align-items:flex-start;gap:10px;padding:9px 0;border-bottom:1px solid rgba(255,255,255,.04);font-size:13px;color:var(--g200);cursor:pointer;line-height:1.5;}
+.cl li:last-child{border-bottom:none;}
+.cl li input[type=checkbox]{width:15px;height:15px;accent-color:var(--gold);flex-shrink:0;margin-top:1px;cursor:pointer;}
+.cl li.ck{opacity:.45;text-decoration:line-through;}
+.asteps{margin:28px 0;}
+.astep{display:flex;gap:18px;margin-bottom:18px;align-items:flex-start;}
+.anum{width:34px;height:34px;border:1px solid var(--gold);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--gold);flex-shrink:0;}
+.abody h4{font-size:14px;font-weight:600;color:var(--white);margin-bottom:3px;}
+.abody p{font-size:13px;margin:0;line-height:1.6;}
+.verd{background:linear-gradient(135deg,rgba(201,162,39,.14),rgba(201,162,39,.04));border:1px solid rgba(201,162,39,.4);border-radius:8px;padding:22px 26px;margin:36px 0;display:flex;gap:18px;align-items:flex-start;}
+.verd-ic{font-size:26px;flex-shrink:0;}
+.verd-b h3{font-family:'Playfair Display',serif;font-size:19px;font-weight:600;color:var(--gold);margin-bottom:7px;}
+.verd-b p{font-size:13px;color:var(--g200);margin:0;line-height:1.7;}
+.nbtn{background:var(--gold);color:var(--navy);border:none;padding:13px 30px;font-family:'Inter',sans-serif;font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;border-radius:3px;transition:all .2s;margin-top:14px;}
+.nbtn:hover{background:var(--gold-light);}
+.vol-complete{text-align:center;margin-top:44px;padding:32px;background:rgba(201,162,39,.07);border-radius:8px;border:1px solid rgba(201,162,39,.2);}
+.vol-complete .vc-ey{font-size:11px;letter-spacing:.2em;color:var(--gold);text-transform:uppercase;margin-bottom:12px;}
+.vol-complete p{font-size:15px;color:var(--g200);margin-bottom:20px;}
+.pbwrap{position:fixed;bottom:0;left:0;right:0;height:3px;background:rgba(255,255,255,.05);z-index:200;}
+.pbfill{height:100%;background:var(--gold);width:0%;transition:width .3s;}
+@media(max-width:768px){.vhdr,.chcon{padding:28px 20px;}.chnav{padding:0 20px;}.cgrid{grid-template-columns:1fr;}.vol-grid{grid-template-columns:repeat(3,1fr);}}
+</style>
+</head>
+<body>
+<div id="cover">
+  <div class="cover-eyebrow">Strategic Decision Library · Premium Edition</div>
+  <h1 class="cover-title">The Next Move<span class="cover-tm">™</span></h1>
+  <p class="cover-sub">The Strategic Decision Library for Ambitious People</p>
+  <div class="cover-div"></div>
+  <div class="vol-grid">
+    <div class="vol-pill" onclick="openVol(0)"><span class="vl">Vol. I</span><span class="vn">Career</span></div>
+    <div class="vol-pill" onclick="openVol(1)"><span class="vl">Vol. II</span><span class="vn">AI</span></div>
+    <div class="vol-pill" onclick="openVol(2)"><span class="vl">Vol. III</span><span class="vn">Business</span></div>
+    <div class="vol-pill" onclick="openVol(3)"><span class="vl">Vol. IV</span><span class="vn">Investing</span></div>
+    <div class="vol-pill" onclick="openVol(4)"><span class="vl">Vol. V</span><span class="vn">Network</span></div>
+  </div>
+  <button class="cover-cta" onclick="openVol(0)">Begin with Volume I: Career →</button>
+</div>
+<nav id="nav">
+  <div class="nav-brand" onclick="goHome()">The Next Move<span>™</span></div>
+  <div class="nav-vols">
+    <button class="nvb" onclick="openVol(0)" id="nb0">I · Career</button>
+    <button class="nvb" onclick="openVol(1)" id="nb1">II · AI</button>
+    <button class="nvb" onclick="openVol(2)" id="nb2">III · Business</button>
+    <button class="nvb" onclick="openVol(3)" id="nb3">IV · Investing</button>
+    <button class="nvb" onclick="openVol(4)" id="nb4">V · Network</button>
+  </div>
+</nav>
+<div id="app">
+<div class="pbwrap"><div class="pbfill" id="pb"></div></div>
+<!-- VOLUME I: CAREER -->
+<div class="vwrap" id="v0">
+<div class="vhdr" data-roman="I">
+  <div class="vhdr-ey">Volume I · The Next Move™</div>
+  <h1 class="vhdr-t">Career</h1>
+  <p class="vhdr-s">The Strategic Career Decision System</p>
+  <p class="vhdr-d">Most people choose their career path the way they pick a Netflix show — gut feeling, peer pressure, or whatever looks prestigious. This volume replaces intuition with a systematic framework for the most important professional decisions of your 20s.</p>
+</div>
+<div class="chnav" id="cn0">
+  <button class="chtab active" onclick="showCh(0,0)">University vs. Business</button>
+  <button class="chtab" onclick="showCh(0,1)">Finance vs. Consulting</button>
+  <button class="chtab" onclick="showCh(0,2)">Startup vs. Corporate</button>
+  <button class="chtab" onclick="showCh(0,3)">Generalist vs. Specialist</button>
+  <button class="chtab" onclick="showCh(0,4)">Germany vs. Abroad</button>
+  <button class="chtab" onclick="showCh(0,5)">Master vs. Direct Entry</button>
+</div>
+
+<!-- CH 0-0 -->
+<div class="chcon active" id="c0-0">
+  <div class="ch-ey">Chapter 1 · Career Decisions</div>
+  <h2 class="ch-t">University vs. Starting a Business</h2>
+  <p class="ch-s">The founding choice of your twenties</p>
+  <div class="ch-lead">This is the decision most people make by default. They go to university because everyone else does. A few start businesses because they're impatient. The right answer depends entirely on who you are — and what kind of leverage you're trying to build.</div>
+  <div class="cgrid">
+    <div class="ccard"><h4>University</h4><ul>
+      <li>Credential that opens specific doors (IB, consulting, law, medicine)</li>
+      <li>Structured learning with low downside risk</li>
+      <li>Peer network at a critical developmental age</li>
+      <li>Time to experiment before committing</li>
+      <li>Access to campus recruiting pipelines</li>
+    </ul></div>
+    <div class="ccard neg"><h4>University — The Real Costs</h4><ul>
+      <li>Opportunity cost: 3–5 years of not building</li>
+      <li>Structured learning ≠ applicable skill</li>
+      <li>Most degrees don't teach how money works</li>
+      <li>Peer group is often not high-ambition</li>
+      <li>Delays the feedback loop that builds judgment</li>
+    </ul></div>
+  </div>
+  <div class="cgrid">
+    <div class="ccard win"><h4>Building a Business Early</h4><ul>
+      <li>Real market feedback in months, not years</li>
+      <li>Forces financial literacy immediately</li>
+      <li>Compounding experience — 2 years of failure > 4 years of class</li>
+      <li>No ceiling on income during building phase</li>
+      <li>Optionality: you can still do a Master's later</li>
+    </ul></div>
+    <div class="ccard neg"><h4>Business — The Real Risks</h4><ul>
+      <li>No safety net if revenue fails</li>
+      <li>Certain paths permanently closed (IB analyst programs, Big Law)</li>
+      <li>Isolation without the right peer network</li>
+      <li>High failure rate in years 1–2</li>
+      <li>No credential to fall back on</li>
+    </ul></div>
+  </div>
+  <h3 class="sec-t">ROI Analysis</h3>
+  <table class="rtable"><thead><tr><th>Factor</th><th>University</th><th>Self-Directed Business</th></tr></thead>
+  <tbody>
+    <tr><td>Time to first income</td><td class="b">3–5 years</td><td class="g">0–12 months</td></tr>
+    <tr><td>Income ceiling at 30</td><td class="m">€60–120k (structured)</td><td class="g">Unlimited (equity/revenue)</td></tr>
+    <tr><td>Network quality</td><td class="m">Peer-level, 1 institution</td><td class="g">Cross-industry, earned</td></tr>
+    <tr><td>Skill type</td><td class="m">Theoretical</td><td class="g">Applied, market-validated</td></tr>
+    <tr><td>Credential value</td><td class="g">High (for specific roles)</td><td class="b">None (for specific roles)</td></tr>
+    <tr><td>Reversibility</td><td class="m">Can't recover lost time</td><td class="g">Can always go back</td></tr>
+  </tbody></table>
+  <div class="wbox"><div class="bl">⚠ The Biggest Mistake</div><p>Going to university while wanting to build a business because it "feels safer." Safety is an illusion when the opportunity cost is your most productive years. University delays the feedback loop that makes entrepreneurs good. Do not confuse structure with progress.</p></div>
+  <div class="csbox"><div class="bl">📊 Case Study — Two Paths at 22</div>
+    <p><strong>Path A:</strong> Lucas, 22, builds a digital services business. Year 1: €18k revenue. Year 2: €55k. Year 3: €120k. At 25 he has 3 years of real operating experience, a client portfolio, and financial independence.</p>
+    <p><strong>Path B:</strong> Max, 22, studies Business Administration. At 25 he starts an internship at €1,400/month. At 27 he earns €55k/year. At 30, €75k with bonus — stable, but 5 years behind in compounding experience.</p>
+    <p><strong>Verdict:</strong> Path A wins on income velocity. Path B wins on institutional access. The decision depends entirely on your destination.</p>
+  </div>
+  <h3 class="sec-t">When University Wins</h3>
+  <ul class="cl"><li><input type="checkbox" onchange="ck(this)"> Your target is IB, Big Law, Medicine, or Elite Consulting</li>
+  <li><input type="checkbox" onchange="ck(this)"> You have no clear business idea and need time to explore</li>
+  <li><input type="checkbox" onchange="ck(this)"> You're targeting roles where university brand matters for filtering</li>
+  <li><input type="checkbox" onchange="ck(this)"> Tuition is subsidized (Germany, Netherlands) — low financial risk</li></ul>
+  <h3 class="sec-t">When Business Wins</h3>
+  <ul class="cl"><li><input type="checkbox" onchange="ck(this)"> You have a validated idea or strong freelance skill</li>
+  <li><input type="checkbox" onchange="ck(this)"> Your target path does not require a degree (tech, media, services)</li>
+  <li><input type="checkbox" onchange="ck(this)"> You are willing to invest 2 years of low income for asymmetric upside</li>
+  <li><input type="checkbox" onchange="ck(this)"> You are self-directed and disciplined without external structure</li></ul>
+  <div class="sc"><h3>Self-Assessment: Which Path Fits You?</h3><p class="scsub">Rate yourself honestly. 1 = not me · 10 = completely me</p>
+    <div class="srow"><div class="slbl">I have a clear target role that requires a degree</div><div class="sinp"><input type="range" min="1" max="10" value="5" oninput="us('a0',this.value)"><span class="sval" id="a0">5</span></div></div>
+    <div class="srow"><div class="slbl">I can generate income without a credential today</div><div class="sinp"><input type="range" min="1" max="10" value="5" oninput="us('a1',this.value)"><span class="sval" id="a1">5</span></div></div>
+    <div class="srow"><div class="slbl">I need external structure to stay focused</div><div class="sinp"><input type="range" min="1" max="10" value="5" oninput="us('a2',this.value)"><span class="sval" id="a2">5</span></div></div>
+    <div class="srow"><div class="slbl">I am comfortable with financial uncertainty for 2+ years</div><div class="sinp"><input type="range" min="1" max="10" value="5" oninput="us('a3',this.value)"><span class="sval" id="a3">5</span></div></div>
+    <div class="stot"><span class="sl">Your Score</span><span class="sv" id="a-tot">20/40</span></div>
+    <p class="sverd" id="a-vrd">→ Balanced — consider hybrid approach</p>
+  </div>
+  <h3 class="sec-t">Decision Matrix</h3>
+  <div class="mwrap"><table class="dmat"><thead><tr><th>Situation</th><th>University</th><th>Business</th><th>Hybrid</th></tr></thead>
+  <tbody>
+    <tr><td>Target: IB / Consulting / Law</td><td class="g">✓ Required</td><td class="b">✗ Closed doors</td><td class="m">Possible</td></tr>
+    <tr><td>Target: Tech / Media / Services</td><td class="m">Optional</td><td class="g">✓ Faster</td><td class="g">✓ Strong</td></tr>
+    <tr><td>Target: Entrepreneurship</td><td class="b">✗ Delays feedback</td><td class="g">✓ Best path</td><td class="m">Depends</td></tr>
+    <tr><td>No clear direction yet</td><td class="g">✓ Use to explore</td><td class="b">✗ Risky</td><td class="m">Possible</td></tr>
+  </tbody></table></div>
+  <div class="ws"><h3>Your Decision Worksheet</h3><p class="wssub">Complete before moving to the next chapter.</p>
+    <div class="fi"><label>My primary career goal in 10 years:</label><textarea rows="2" placeholder="e.g. Partner at a consulting firm / Founder of a tech company / Portfolio manager"></textarea></div>
+    <div class="fi"><label>The one thing that would confirm I need a degree:</label><textarea rows="2" placeholder="e.g. The role explicitly requires it / Company only hires from top universities"></textarea></div>
+    <div class="fi"><label>The one skill I could monetize today without a degree:</label><textarea rows="1" placeholder="e.g. copywriting, web development, video editing, sales"></textarea></div>
+    <div class="fi"><label>My decision: University · Business · Hybrid — and why:</label><textarea rows="3" placeholder="Write your reasoning."></textarea></div>
+  </div>
+  <div class="verd"><div class="verd-ic">⚡</div><div class="verd-b"><h3>The Strategic Verdict</h3><p>If your destination is a credentialed profession (IB, consulting, law, medicine), university is non-negotiable — go and optimize it. If your destination is building something, starting earlier almost always wins. The middle path — studying while building — is underrated and often the highest-ROI option. The worst decision is going to university to delay a decision.</p></div></div>
+  <button class="nbtn" onclick="showCh(0,1)">Next: Finance vs. Consulting →</button>
+</div>
+
+<!-- CH 0-1 -->
+<div class="chcon" id="c0-1">
+  <div class="ch-ey">Chapter 2 · Career Decisions</div>
+  <h2 class="ch-t">Finance vs. Consulting</h2>
+  <p class="ch-s">Two elite tracks. Two completely different games.</p>
+  <div class="ch-lead">Finance and consulting are the two most-coveted career tracks among ambitious graduates. Both are prestigious. Both pay well. But they build entirely different skill sets, networks, and exit options — and choosing the wrong one costs you years.</div>
+  <p><strong>Finance</strong> is about capital allocation. You learn how money flows, how assets are valued, how deals are structured. <strong>Consulting</strong> is about problem-solving and communication. You learn to dissect complex organizational problems, build frameworks, and present recommendations. The real question is: what competency do you want to compound for the next decade?</p>
+  <div class="cgrid">
+    <div class="ccard"><h4>Finance (IB / PE / HF)</h4><ul>
+      <li>IB Analyst Year 1: €70–110k base + bonus</li>
+      <li>PE Associate: €120–200k all-in</li>
+      <li>Hedge Fund: up to €500k+ with carry</li>
+      <li>Narrow but extremely deep skillset</li>
+      <li>Best exits: PE, HF, VC, CFO track</li>
+    </ul></div>
+    <div class="ccard"><h4>Consulting (MBB / Big4)</h4><ul>
+      <li>MBB Analyst Year 1: €65–90k + bonus</li>
+      <li>Consultant: €90–130k all-in</li>
+      <li>Senior Manager: €150–250k</li>
+      <li>Broad problem-solving skillset</li>
+      <li>Best exits: C-Suite, startup, PE ops</li>
+    </ul></div>
+  </div>
+  <div class="ibox"><div class="bl">💡 The Key Insight</div><p>Finance builds financial capital and quantitative intuition. Consulting builds intellectual frameworks and executive presence. If you want to manage money, go finance. If you want to lead organizations or build companies, consulting develops more transferable skills. Most CFOs come from finance. Many CEOs and founders come from consulting.</p></div>
+  <h3 class="sec-t">Exit Options Compared</h3>
+  <table class="rtable"><thead><tr><th>Exit Path</th><th>From Finance</th><th>From Consulting</th></tr></thead>
+  <tbody>
+    <tr><td>Private Equity</td><td class="g">✓ Primary pipeline</td><td class="m">Possible (ops roles)</td></tr>
+    <tr><td>Hedge Fund</td><td class="g">✓ Standard</td><td class="b">Rare</td></tr>
+    <tr><td>Startup Founding</td><td class="m">Possible</td><td class="g">✓ Very common</td></tr>
+    <tr><td>C-Suite (Fortune 500)</td><td class="m">CFO track only</td><td class="g">✓ CEO/COO/CSO</td></tr>
+    <tr><td>Venture Capital</td><td class="g">✓ Strong</td><td class="g">✓ Strong</td></tr>
+    <tr><td>Corporate Strategy</td><td class="m">Possible</td><td class="g">✓ Primary path</td></tr>
+  </tbody></table>
+  <h3 class="sec-t">Day-to-Day Reality</h3>
+  <table class="rtable"><thead><tr><th>Dimension</th><th>Finance</th><th>Consulting</th></tr></thead>
+  <tbody>
+    <tr><td>Weekly hours</td><td class="b">80–110h (IB)</td><td class="b">60–80h (MBB)</td></tr>
+    <tr><td>Primary output</td><td>Models, memos, pitchbooks</td><td>Slides, frameworks, workshops</td></tr>
+    <tr><td>Client interaction (Year 1)</td><td class="b">Minimal</td><td class="g">Frequent</td></tr>
+    <tr><td>Meritocracy</td><td class="g">High</td><td class="m">Moderate</td></tr>
+    <tr><td>Skill ceiling</td><td class="g">Extremely high</td><td class="m">Broad but shallower</td></tr>
+  </tbody></table>
+  <div class="sc"><h3>Finance vs. Consulting Fit Score</h3><p class="scsub">Rate how much each statement describes you. 1 = not at all · 10 = perfectly</p>
+    <div class="srow"><div class="slbl">I am energized by numbers, models, and financial analysis</div><div class="sinp"><input type="range" min="1" max="10" value="5" oninput="us('b0',this.value)"><span class="sval" id="b0">5</span></div></div>
+    <div class="srow"><div class="slbl">I prefer dealing with capital allocation over human/org problems</div><div class="sinp"><input type="range" min="1" max="10" value="5" oninput="us('b1',this.value)"><span class="sval" id="b1">5</span></div></div>
+    <div class="srow"><div class="slbl">I want to ultimately manage a fund or allocate capital</div><div class="sinp"><input type="range" min="1" max="10" value="5" oninput="us('b2',this.value)"><span class="sval" id="b2">5</span></div></div>
+    <div class="srow"><div class="slbl">I enjoy presenting, teaching, and structuring arguments</div><div class="sinp"><input type="range" min="1" max="10" value="5" oninput="us('b3',this.value)"><span class="sval" id="b3">5</span></div></div>
+    <div class="srow"><div class="slbl">I want to eventually found or lead a company</div><div class="sinp"><input type="range" min="1" max="10" value="5" oninput="us('b4',this.value)"><span class="sval" id="b4">5</span></div></div>
+    <div class="stot"><span class="sl">Finance score (1–3) vs. Consulting (4–5)</span><span class="sv" id="b-tot">25/50</span></div>
+    <p class="sverd" id="b-vrd">→ Balanced — evaluate by exit goals</p>
+  </div>
+  <div class="ws"><h3>Your Decision Worksheet</h3><p class="wssub">Complete before choosing your application strategy.</p>
+    <div class="fi"><label>At 40, I want to be known as someone who:</label><textarea rows="2" placeholder="e.g. built and sold companies / managed a fund / led major corporate transformations"></textarea></div>
+    <div class="fi"><label>The skill I most want to compound over the next 5 years:</label><textarea rows="1" placeholder="Financial modeling / Corporate strategy / Client management / Deal structuring"></textarea></div>
+    <div class="fi"><label>My track choice — Finance · Consulting · Both (dual recruiting) — and why:</label><textarea rows="2" placeholder="Write your reasoning."></textarea></div>
+  </div>
+  <div class="verd"><div class="verd-ic">⚡</div><div class="verd-b"><h3>The Strategic Verdict</h3><p>If you want to work with money and eventually allocate capital: Finance. If you want to work with problems and eventually lead organizations or build companies: Consulting. The worst choice is optimizing for salary in Year 1 rather than skill set at Year 10. Both tracks pay well. What matters is where they take you next.</p></div></div>
+  <button class="nbtn" onclick="showCh(0,2)">Next: Startup vs. Corporate →</button>
+</div>
+
+<!-- CH 0-2 -->
+<div class="chcon" id="c0-2">
+  <div class="ch-ey">Chapter 3 · Career Decisions</div>
+  <h2 class="ch-t">Startup vs. Corporate</h2>
+  <p class="ch-s">Speed vs. stability — and why the choice isn't what you think</p>
+  <div class="ch-lead">The startup vs. corporate debate has become ideological. Startups have been glorified. Corporates have been dismissed. Both conclusions are wrong. The right environment depends on what you're trying to learn, earn, and build in the next 3–5 years.</div>
+  <div class="cgrid">
+    <div class="ccard win"><h4>Early-Stage Startup (Seed–Series B)</h4><ul>
+      <li>Extreme learning velocity — you own entire functions</li>
+      <li>Equity upside if the company succeeds</li>
+      <li>Direct access to founders and decision-makers</li>
+      <li>Resume signal: "I built something real"</li>
+      <li>High internal optionality — pivot fast</li>
+    </ul></div>
+    <div class="ccard"><h4>Corporate / Blue Chip</h4><ul>
+      <li>Stable income and structured progression</li>
+      <li>Brand on resume opens future doors</li>
+      <li>Deep domain expertise in one function</li>
+      <li>Resources, mentorship, training programs</li>
+      <li>Lower personal risk, more predictable trajectory</li>
+    </ul></div>
+  </div>
+  <div class="wbox"><div class="bl">⚠ The Startup Romanticization Trap</div><p>90% of startups fail within 5 years. "Working at a startup" can mean anything from Series D hypergrowth to a 3-person experiment with no product-market fit. A bad startup gives you chaos, low pay, and a resume gap. A great startup (Tier 1 VC-backed, strong founding team) is often superior to any corporate role.</p></div>
+  <h3 class="sec-t">The Startup Quality Spectrum</h3>
+  <table class="rtable"><thead><tr><th>Stage</th><th>Learning</th><th>Equity Value</th><th>Risk</th><th>Verdict</th></tr></thead>
+  <tbody>
+    <tr><td>Pre-seed / Idea stage</td><td class="g">High</td><td class="m">Possible</td><td class="b">Very high</td><td class="m">For the bold</td></tr>
+    <tr><td>Seed / €1–5M raised</td><td class="g">Very high</td><td class="g">Real upside</td><td class="b">High</td><td class="g">Strong option</td></tr>
+    <tr><td>Series A–B / Proven</td><td class="g">High</td><td class="g">Meaningful</td><td class="m">Medium</td><td class="g">Excellent</td></tr>
+    <tr><td>Series C+ / Scale-up</td><td class="m">Medium</td><td class="m">Limited</td><td class="g">Low</td><td class="m">Corporate-like</td></tr>
+    <tr><td>Large Tech (FAANG)</td><td class="m">Narrow</td><td class="g">Stock comp</td><td class="g">Very low</td><td class="m">Corporate with equity</td></tr>
+  </tbody></table>
+  <div class="ws"><h3>Startup vs. Corporate Worksheet</h3><p class="wssub">Answer honestly.</p>
+    <div class="fi"><label>What I most want to learn in the next 3 years:</label><textarea rows="2" placeholder="e.g. how to run a P&L / how to build products / how to close enterprise deals"></textarea></div>
+    <div class="fi"><label>My minimum acceptable salary right now:</label><textarea rows="1" placeholder="€___"></textarea></div>
+    <div class="fi"><label>My ideal company stage — Pre-seed · Seed · Series A · Series C+ · Corporate — and why:</label><textarea rows="2" placeholder="Write your reasoning."></textarea></div>
+  </div>
+  <div class="verd"><div class="verd-ic">⚡</div><div class="verd-b"><h3>The Strategic Verdict</h3><p>The best career move in your 20s is often a Seed to Series B startup with a strong founding team in a category you want to understand deeply. You learn more in 2 years than in 5 at a corporate. The second-best option is a top corporate with genuine training and a strong alumni network. The worst option: a mediocre startup that isn't growing — it teaches you nothing and wastes your most productive years.</p></div></div>
+  <button class="nbtn" onclick="showCh(0,3)">Next: Generalist vs. Specialist →</button>
+</div>
+
+<!-- CH 0-3 -->
+<div class="chcon" id="c0-3">
+  <div class="ch-ey">Chapter 4 · Career Decisions</div>
+  <h2 class="ch-t">Generalist vs. Specialist</h2>
+  <p class="ch-s">The T-Shape question every ambitious professional must answer</p>
+  <div class="ch-lead">In a world where AI is commoditizing broad skills at speed, the generalist vs. specialist question has never been more important. The answer is not binary — the architecture of your expertise may be the single most important career decision you make in your 20s.</div>
+  <div class="ibox"><div class="bl">💡 The T-Shape Model</div><p>The highest-value profile is neither pure generalist nor pure specialist. It is T-shaped: extreme depth in one area (the vertical bar) combined with broad fluency across adjacent disciplines (the horizontal bar). Pure generalists are replaceable. Pure specialists are fragile. T-shapes are scarce and therefore valuable.</p></div>
+  <div class="cgrid">
+    <div class="ccard"><h4>Generalist Profile</h4><ul>
+      <li>Adaptable to different contexts and industries</li>
+      <li>Strong in leadership, coordination, strategy</li>
+      <li>High ceiling: CEO, founder, chief of staff</li>
+      <li>Risk: "Jack of all trades" perception early-career</li>
+      <li>Ideal for: consulting, entrepreneurship, VC</li>
+    </ul></div>
+    <div class="ccard win"><h4>Deep Specialist (T-Shape)</h4><ul>
+      <li>Becomes "the person" for a specific problem</li>
+      <li>Harder to replace, easier to charge premium</li>
+      <li>High value in AI era — rare human expertise</li>
+      <li>Strong at freelancing, advisory, consulting</li>
+      <li>Ideal for: finance, engineering, law, niche SaaS</li>
+    </ul></div>
+  </div>
+  <div class="wbox"><div class="bl">⚠ The AI Generalist Trap</div><p>AI is commoditizing generalist knowledge at unprecedented speed. Tasks that required a broad-skilled analyst — research, summarizing, structuring arguments, writing drafts — are increasingly automated. What AI cannot replicate: domain intuition built from years of practitioner experience, proprietary network access, and highly specialized judgment. The more niche your expertise, the higher your AI-era moat.</p></div>
+  <div class="ws"><h3>Your Specialization Design</h3><p class="wssub">Design your T-shape profile.</p>
+    <div class="fi"><label>My deepest skill or knowledge area today:</label><textarea rows="1" placeholder="e.g. financial modeling / Python / SEO / credit risk analysis / contract law"></textarea></div>
+    <div class="fi"><label>The niche I want to dominate in 5 years:</label><textarea rows="2" placeholder="e.g. AI-driven credit underwriting / B2B SaaS growth / renewable energy M&A"></textarea></div>
+    <div class="fi"><label>Three adjacent skills for my horizontal bar:</label><textarea rows="1" placeholder="1. ___ · 2. ___ · 3. ___"></textarea></div>
+  </div>
+  <div class="verd"><div class="verd-ic">⚡</div><div class="verd-b"><h3>The Strategic Verdict</h3><p>Age 20–25: be a generalist — explore broadly. Age 25–32: commit to your vertical. Develop extreme depth in one domain. Build the horizontal bar deliberately. The goal is to become the person who gets called when a specific high-stakes problem needs solving — not the person who "knows a bit about everything."</p></div></div>
+  <button class="nbtn" onclick="showCh(0,4)">Next: Germany vs. Abroad →</button>
+</div>
+
+<!-- CH 0-4 -->
+<div class="chcon" id="c0-4">
+  <div class="ch-ey">Chapter 5 · Career Decisions</div>
+  <h2 class="ch-t">Germany vs. Working Abroad</h2>
+  <p class="ch-s">Geography is leverage. Most people underestimate it.</p>
+  <div class="ch-lead">Where you build your career has a multiplier effect on your network, income ceiling, and optionality. Germany is stable and high-quality. But certain career tracks simply pay more, move faster, and attract better talent in other geographies.</div>
+  <table class="rtable"><thead><tr><th>Factor</th><th>Germany</th><th>London</th><th>Dubai</th><th>USA</th></tr></thead>
+  <tbody>
+    <tr><td>IB Analyst Year 1</td><td class="m">€70–90k</td><td class="g">£90–120k</td><td class="g">AED 350–500k</td><td class="g">$120–180k</td></tr>
+    <tr><td>Tax burden</td><td class="b">~42%</td><td class="m">~40%</td><td class="g">0%</td><td class="m">~30–35%</td></tr>
+    <tr><td>VC / Startup ecosystem</td><td class="m">Growing</td><td class="g">Tier 1</td><td class="m">Emerging</td><td class="g">Best in world</td></tr>
+    <tr><td>Network quality</td><td class="m">Solid</td><td class="g">Global</td><td class="m">Regional</td><td class="g">World-class</td></tr>
+    <tr><td>Quality of life</td><td class="g">Very high</td><td class="m">High</td><td class="m">Good (expats)</td><td class="m">Varies</td></tr>
+  </tbody></table>
+  <div class="ibox"><div class="bl">💡 The 3-Year Abroad Strategy</div><p>You don't have to emigrate permanently. The highest-ROI move for ambitious Germans in their late 20s is often 2–3 years in London, Dubai, or New York — to expand your network, earn more, and return with international experience and capital. The compounding effect of an international stint on your later career in Germany is significant.</p></div>
+  <div class="ws"><h3>Your Geography Decision</h3><p class="wssub">Map out your geographic strategy.</p>
+    <div class="fi"><label>The city I would move to if there were no barriers:</label><textarea rows="1" placeholder=""></textarea></div>
+    <div class="fi"><label>The specific career benefit I would get from going there:</label><textarea rows="1" placeholder="Higher pay / better network / stronger ecosystem / specific firm or fund"></textarea></div>
+    <div class="fi"><label>My timeline: Now · 1–2 years · 3–5 years · Never — and why:</label><textarea rows="2" placeholder="Write your reasoning."></textarea></div>
+  </div>
+  <div class="verd"><div class="verd-ic">⚡</div><div class="verd-b"><h3>The Strategic Verdict</h3><p>If your target track pays significantly more internationally, a move before 30 is almost always worth it. The network, income, and experience you build compound for decades. Germany is an excellent base — but it is not the ceiling. Think about where you want to be at 40, and work backwards to find where you should be at 28.</p></div></div>
+  <button class="nbtn" onclick="showCh(0,5)">Next: Master vs. Direct Entry →</button>
+</div>
+
+<!-- CH 0-5 -->
+<div class="chcon" id="c0-5">
+  <div class="ch-ey">Chapter 6 · Career Decisions</div>
+  <h2 class="ch-t">Master's Degree vs. Direct Market Entry</h2>
+  <p class="ch-s">Is another 2 years in academia worth it?</p>
+  <div class="ch-lead">After a bachelor's, many ambitious people face this crossroads: add another credential, or enter the market and start accumulating real experience? The answer depends on what you're trying to unlock — and whether a Master's is the key or just a delay.</div>
+  <div class="ibox"><div class="bl">💡 When a Master's Is Worth It</div><p>A Master's from a top school (LBS, HEC, WHU, Mannheim, Bocconi, ESADE) adds genuine signal in finance and consulting recruiting. It can be the ticket into MBB or IB if your bachelor's school was insufficient. If your degree school already gets you into the interview rooms you want, a second degree is often redundant.</p></div>
+  <table class="rtable"><thead><tr><th>Situation</th><th>Do a Master's</th><th>Enter Market Now</th></tr></thead>
+  <tbody>
+    <tr><td>Target MBB/IB, bachelor from non-target school</td><td class="g">✓ Often necessary</td><td class="b">Hard without it</td></tr>
+    <tr><td>Target MBB/IB, bachelor from target school</td><td class="m">Optional</td><td class="g">✓ Go now</td></tr>
+    <tr><td>Target: Tech / Startups / Media</td><td class="b">Rarely needed</td><td class="g">✓ Start building</td></tr>
+    <tr><td>Target: Entrepreneurship</td><td class="b">Almost never worth it</td><td class="g">✓ Build now</td></tr>
+    <tr><td>Want to switch fields entirely</td><td class="g">✓ Can be efficient</td><td class="m">Possible but slow</td></tr>
+    <tr><td>Have concrete offer from target firm</td><td class="b">Don't delay</td><td class="g">✓ Take the offer</td></tr>
+  </tbody></table>
+  <div class="wbox"><div class="bl">⚠ The Prestige Delay Trap</div><p>Many people pursue a Master's to delay a decision they should be making now. If you don't know what you want, a Master's gives you 2 more years to not know — at a cost of €15–80k and 2 years of income. Clarity doesn't come from more credentials. It comes from exposure to real decisions and real markets.</p></div>
+  <div class="ws"><h3>Master's ROI Worksheet</h3><p class="wssub">Run the numbers before deciding.</p>
+    <div class="fi"><label>The specific door I believe a Master's will open for me:</label><textarea rows="2" placeholder="e.g. MBB recruiting access / switching from engineering to finance / upgrading school brand"></textarea></div>
+    <div class="fi"><label>Total cost of the Master's (tuition + living + opportunity cost):</label><textarea rows="1" placeholder="€___"></textarea></div>
+    <div class="fi"><label>My estimated salary increase in Year 5 attributable to the Master's:</label><textarea rows="1" placeholder="€___ / year"></textarea></div>
+    <div class="fi"><label>Payback period = Total cost ÷ Annual salary uplift:</label><textarea rows="1" placeholder="___ years — acceptable? Yes / No"></textarea></div>
+  </div>
+  <div class="verd"><div class="verd-ic">⚡</div><div class="verd-b"><h3>The Strategic Verdict</h3><p>A Master's is worth it if and only if it unlocks a specific door that is currently closed to you. If the door is already open, spend the 2 years gaining real experience. The best time to start your career is as early as possible with as much real responsibility as possible. No Master's replaces 2 years of market experience at the right company.</p></div></div>
+  <div class="vol-complete">
+    <div class="vc-ey">Volume I Complete</div>
+    <p>You have worked through all 6 Career Decision Systems.<br>Your frameworks are set. Now make the decision.</p>
+    <button class="nbtn" onclick="openVol(1)">Continue to Volume II: AI →</button>
+  </div>
+</div>
+</div><!-- end v0 -->
+<!-- VOLUME II: AI -->
+<div class="vwrap" id="v1">
+<div class="vhdr" data-roman="II">
+  <div class="vhdr-ey">Volume II · The Next Move™</div>
+  <h1 class="vhdr-t">AI</h1>
+  <p class="vhdr-s">The Strategic AI Leverage System</p>
+  <p class="vhdr-d">AI is not a trend. It is the largest productivity and income leverage shift in a generation. This volume helps you identify which AI skills are actually worth building, which roles are being created, and how to position yourself in a world being restructured by artificial intelligence.</p>
+</div>
+<div class="chnav" id="cn1">
+  <button class="chtab active" onclick="showCh(1,0)">Builder vs. User</button>
+  <button class="chtab" onclick="showCh(1,1)">Which Skills Actually Matter</button>
+  <button class="chtab" onclick="showCh(1,2)">Freelancer vs. Founder</button>
+  <button class="chtab" onclick="showCh(1,3)">Your AI Moat</button>
+</div>
+
+<!-- CH 1-0 -->
+<div class="chcon active" id="c1-0">
+  <div class="ch-ey">Chapter 1 · AI Decisions</div>
+  <h2 class="ch-t">AI Builder vs. AI User</h2>
+  <p class="ch-s">Are you building the tools — or using them to build your advantage?</p>
+  <div class="ch-lead">Most AI advice tells you to "learn AI." That's too vague to be useful. The real question is: are you going to build AI systems, or use AI systems to become dramatically more productive in your existing domain? Both are valid. They require completely different investments.</div>
+  <div class="cgrid">
+    <div class="ccard"><h4>AI Builder</h4><ul>
+      <li>Builds models, agents, pipelines, products</li>
+      <li>Requires: Python, ML fundamentals, LLM APIs</li>
+      <li>Income ceiling: extremely high (ML engineer / technical founder)</li>
+      <li>Time to competency: 12–24 months of focused learning</li>
+      <li>Best for: people with technical aptitude who enjoy programming</li>
+    </ul></div>
+    <div class="ccard win"><h4>AI Power User</h4><ul>
+      <li>Uses AI to 5–20x output in existing domain</li>
+      <li>Requires: prompt engineering, workflow design, tool fluency</li>
+      <li>Effect: dramatically increases value per hour</li>
+      <li>Time to competency: 30–90 days of focused practice</li>
+      <li>Best for: anyone who wants leverage now, without coding</li>
+    </ul></div>
+  </div>
+  <div class="ibox"><div class="bl">💡 The 2025 AI Leverage Reality</div><p>The highest ROI in 2025 is not learning to build AI. It is learning to use AI better than 99% of people in your specific domain. A consultant who uses Claude to do in 2 hours what took 2 days is not "an AI consultant" — they are simply a dramatically more productive consultant. Domain expertise + AI fluency = disproportionate output. That is the moat.</p></div>
+  <h3 class="sec-t">The AI Skills Landscape</h3>
+  <table class="rtable"><thead><tr><th>Skill</th><th>Difficulty</th><th>Income Impact</th><th>Time to Learn</th><th>Verdict</th></tr></thead>
+  <tbody>
+    <tr><td>Advanced Prompting & Workflows</td><td class="g">Low</td><td class="g">High (immediate)</td><td class="g">2–4 weeks</td><td class="g">✓ Start here</td></tr>
+    <tr><td>AI Automation (Make / Zapier)</td><td class="g">Low-Medium</td><td class="g">High</td><td class="m">4–8 weeks</td><td class="g">✓ High ROI</td></tr>
+    <tr><td>Python for AI / APIs</td><td class="m">Medium</td><td class="g">Very high</td><td class="b">3–6 months</td><td class="m">Worth it if technical</td></tr>
+    <tr><td>Fine-tuning / RAG / Agents</td><td class="b">High</td><td class="g">Very high</td><td class="b">6–12 months</td><td class="m">For builders only</td></tr>
+    <tr><td>AI Product Management</td><td class="m">Medium</td><td class="g">High</td><td class="m">3–6 months</td><td class="g">✓ Rising demand</td></tr>
+    <tr><td>"AI strategy consulting" (generic)</td><td class="g">Low</td><td class="m">Medium (saturated)</td><td class="g">Fast</td><td class="b">✗ Overhyped</td></tr>
+    <tr><td>AI content creation (generic)</td><td class="g">Low</td><td class="b">Low</td><td class="g">Fast</td><td class="b">✗ Commodity</td></tr>
+  </tbody></table>
+  <div class="sc"><h3>Builder vs. User Profile Assessment</h3><p class="scsub">Rate yourself honestly. 1 = not me · 10 = completely me</p>
+    <div class="srow"><div class="slbl">I enjoy programming and technical problem-solving</div><div class="sinp"><input type="range" min="1" max="10" value="5" oninput="us('c0',this.value)"><span class="sval" id="c0">5</span></div></div>
+    <div class="srow"><div class="slbl">I have a domain where I want immediate AI leverage</div><div class="sinp"><input type="range" min="1" max="10" value="5" oninput="us('c1',this.value)"><span class="sval" id="c1">5</span></div></div>
+    <div class="srow"><div class="slbl">I can invest 12–24 months learning to code at a high level</div><div class="sinp"><input type="range" min="1" max="10" value="5" oninput="us('c2',this.value)"><span class="sval" id="c2">5</span></div></div>
+    <div class="srow"><div class="slbl">I want income leverage without a full technical pivot</div><div class="sinp"><input type="range" min="1" max="10" value="5" oninput="us('c3',this.value)"><span class="sval" id="c3">5</span></div></div>
+    <div class="stot"><span class="sl">Builder score (1,3) vs. User score (2,4)</span><span class="sv" id="c-tot">20/40</span></div>
+    <p class="sverd" id="c-vrd">→ Consider Power User path with builder upskilling</p>
+  </div>
+  <div class="ws"><h3>Your AI Advantage Plan</h3><p class="wssub">Define your personal AI leverage strategy.</p>
+    <div class="fi"><label>My primary domain where AI can give me leverage:</label><textarea rows="1" placeholder="e.g. financial analysis, legal research, content strategy, software development"></textarea></div>
+    <div class="fi"><label>The task that takes the most time and could be automated or accelerated:</label><textarea rows="2" placeholder="e.g. writing first-draft reports / researching competitors / building financial models"></textarea></div>
+    <div class="fi"><label>The AI tool or workflow I will build in the next 30 days:</label><textarea rows="2" placeholder="e.g. Claude prompt library for X / Zapier automation for Y / Python script for Z"></textarea></div>
+    <div class="fi"><label>My path: AI Builder · AI Power User · Both — and why:</label><textarea rows="2" placeholder="Write your reasoning."></textarea></div>
+  </div>
+  <div class="verd"><div class="verd-ic">⚡</div><div class="verd-b"><h3>The Strategic Verdict</h3><p>For most ambitious non-technical professionals: become a power user first. Spend 30–60 days systematically replacing slow manual tasks with AI-augmented workflows. Then evaluate whether building makes sense. For technically minded people: combine domain expertise with Python/API skills. Domain + Code + AI = the most valuable profile of the next decade.</p></div></div>
+  <button class="nbtn" onclick="showCh(1,1)">Next: Which AI Skills Actually Matter →</button>
+</div>
+
+<!-- CH 1-1 -->
+<div class="chcon" id="c1-1">
+  <div class="ch-ey">Chapter 2 · AI Decisions</div>
+  <h2 class="ch-t">Which AI Skills Actually Matter</h2>
+  <p class="ch-s">Signal vs. noise in the most overhyped skill market in history</p>
+  <div class="ch-lead">Every week, someone sells a course on "the AI skill you need to master." Most of it is noise. This chapter gives you a clean framework for evaluating which AI skills have durable value — and which are short-lived arbitrage that will be automated away within 24 months.</div>
+  <div class="ibox"><div class="bl">💡 The Durability Test</div><p>Before investing time in an AI skill, ask: will this still require human judgment in 3 years? Skills that survive: domain-specific prompt design, AI system architecture, evaluating AI output quality and nuance, integrating AI into complex multi-step workflows. Skills being automated away: basic content generation, simple research summarization, template-based writing.</p></div>
+  <table class="rtable"><thead><tr><th>AI Skill Area</th><th>Durable?</th><th>Monetizable?</th><th>Commodity Risk</th><th>Priority</th></tr></thead>
+  <tbody>
+    <tr><td>Domain-specific prompt engineering</td><td class="g">Yes</td><td class="g">High</td><td class="g">Low</td><td class="g">🔥 High</td></tr>
+    <tr><td>AI Agent design & orchestration</td><td class="g">Yes</td><td class="g">Very High</td><td class="m">Medium</td><td class="g">🔥 High</td></tr>
+    <tr><td>LLM API integration (Python)</td><td class="g">Yes</td><td class="g">High</td><td class="m">Medium</td><td class="g">🔥 High</td></tr>
+    <tr><td>AI output evaluation & QA</td><td class="g">Yes</td><td class="m">Medium</td><td class="g">Low</td><td class="m">Medium</td></tr>
+    <tr><td>Generic AI content creation</td><td class="b">No</td><td class="b">Low</td><td class="b">Very High</td><td class="b">✗ Skip</td></tr>
+    <tr><td>AI vendor certifications</td><td class="b">No</td><td class="b">Low</td><td class="b">Very High</td><td class="b">✗ Skip</td></tr>
+    <tr><td>AI strategy consulting (generic)</td><td class="m">Partly</td><td class="m">Medium (short-term)</td><td class="b">High</td><td class="m">Caution</td></tr>
+  </tbody></table>
+  <div class="ws"><h3>Your AI Skill Investment Plan</h3><p class="wssub">Allocate your learning time strategically.</p>
+    <div class="fi"><label>AI skill I will prioritize for the next 90 days:</label><textarea rows="1" placeholder="e.g. building AI agents with Python and Claude API"></textarea></div>
+    <div class="fi"><label>Hours per week I will invest:</label><textarea rows="1" placeholder="___ hours / week"></textarea></div>
+    <div class="fi"><label>How I will monetize this skill in the next 6 months:</label><textarea rows="2" placeholder="e.g. freelance project / internal use case / own product"></textarea></div>
+  </div>
+  <div class="verd"><div class="verd-ic">⚡</div><div class="verd-b"><h3>The Strategic Verdict</h3><p>The most durable AI investment is not a skill — it is a combination of deep domain expertise plus AI literacy. A lawyer who understands AI deeply is more valuable than a "prompt engineer" with no domain. A financial analyst who builds automated research pipelines is more valuable than someone who completed an AI certificate course. Domain × AI = moat.</p></div></div>
+  <button class="nbtn" onclick="showCh(1,2)">Next: AI Freelancer vs. Founder →</button>
+</div>
+
+<!-- CH 1-2 -->
+<div class="chcon" id="c1-2">
+  <div class="ch-ey">Chapter 3 · AI Decisions</div>
+  <h2 class="ch-t">AI Freelancer vs. AI Founder</h2>
+  <p class="ch-s">Two ways to monetize AI skills — with very different risk profiles</p>
+  <div class="ch-lead">If you have AI skills, you face a choice: sell your skills as a service (freelancer) or build a product that scales without your direct labor (founder). Both work. The decision is about risk tolerance, capital, and long-term vision.</div>
+  <div class="cgrid">
+    <div class="ccard win"><h4>AI Freelancer</h4><ul>
+      <li>Revenue in 30–60 days if you have skills</li>
+      <li>Low risk — no product to build</li>
+      <li>High income ceiling: €150–500/hr for specialized work</li>
+      <li>Income = direct function of hours worked</li>
+      <li>Best for: early stage, skill validation, capital building</li>
+    </ul></div>
+    <div class="ccard"><h4>AI Founder</h4><ul>
+      <li>Revenue in 6–18 months if you succeed</li>
+      <li>High risk — product, market, distribution all uncertain</li>
+      <li>Income ceiling: unlimited (equity, ARR, exit)</li>
+      <li>Income = independent of hours when it works</li>
+      <li>Best for: validated problem + existing distribution</li>
+    </ul></div>
+  </div>
+  <div class="ibox"><div class="bl">💡 The Sequencing Strategy</div><p>The optimal path for most people: start as an AI freelancer. Build income, credibility, and — most importantly — a deep understanding of what problems clients actually have. Then, after 12–18 months, identify the most recurring pain point and productize the solution. The transition from freelancer to founder is much smoother when funded by existing revenue.</p></div>
+  <div class="ws"><h3>AI Monetization Plan</h3><p class="wssub">Choose your path and define your first move.</p>
+    <div class="fi"><label>The specific AI service I could offer as a freelancer today:</label><textarea rows="2" placeholder="e.g. AI automation for e-commerce brands / AI-assisted financial research / AI content systems for B2B SaaS"></textarea></div>
+    <div class="fi"><label>My target client and the specific problem I solve for them:</label><textarea rows="2" placeholder="e.g. Solo financial advisors who spend 10h/week on report writing"></textarea></div>
+    <div class="fi"><label>My 90-day income target from AI skills:</label><textarea rows="1" placeholder="€___ / month by month 3"></textarea></div>
+  </div>
+  <div class="verd"><div class="verd-ic">⚡</div><div class="verd-b"><h3>The Strategic Verdict</h3><p>Start as a freelancer. Build capital and market knowledge. Found a product when you have evidence of a recurring, underserved problem. The AI founder landscape in 2025 is crowded with solution-looking-for-a-problem businesses. The best AI founders are former AI practitioners who discovered the gap through client work.</p></div></div>
+  <button class="nbtn" onclick="showCh(1,3)">Next: Your AI Career Moat →</button>
+</div>
+
+<!-- CH 1-3 -->
+<div class="chcon" id="c1-3">
+  <div class="ch-ey">Chapter 4 · AI Decisions</div>
+  <h2 class="ch-t">Building Your AI Career Moat</h2>
+  <p class="ch-s">The framework for becoming irreplaceable in an AI-driven market</p>
+  <div class="ch-lead">A moat is what protects you from competition. In an AI-accelerated market, your moat is not your ability to use tools — everyone will eventually use the same tools. Your moat is the combination of domain expertise, proprietary data access, and network relationships that AI cannot replicate.</div>
+  <h3 class="sec-t">The AI Moat Framework</h3>
+  <table class="rtable"><thead><tr><th>Moat Type</th><th>Description</th><th>Strength</th></tr></thead>
+  <tbody>
+    <tr><td>Domain Depth</td><td>10,000 hours of expertise in a specific field AI lacks context for</td><td class="g">Very High</td></tr>
+    <tr><td>Proprietary Data</td><td>Access to data or clients AI models don't have</td><td class="g">Very High</td></tr>
+    <tr><td>Trusted Network</td><td>Relationships where people trust you — not a model</td><td class="g">High</td></tr>
+    <tr><td>Unique Process</td><td>A workflow so refined it produces better output than generic AI</td><td class="m">Medium</td></tr>
+    <tr><td>"I use ChatGPT" (generic)</td><td>Everyone else does too — no differentiation</td><td class="b">None</td></tr>
+  </tbody></table>
+  <div class="ws"><h3>Your Personal AI Moat Blueprint</h3><p class="wssub">Design the combination that makes you uniquely valuable.</p>
+    <div class="fi"><label>My deepest domain expertise (what I know that AI doesn't intuit):</label><textarea rows="2" placeholder=""></textarea></div>
+    <div class="fi"><label>The proprietary data or relationships I have that give me an edge:</label><textarea rows="2" placeholder="e.g. client relationships in X industry / access to Y data source / distribution in Z community"></textarea></div>
+    <div class="fi"><label>My AI moat in one sentence:</label><textarea rows="2" placeholder="I am the only person who combines [domain] + [AI skills] + [network/data] to solve [problem] for [client]."></textarea></div>
+  </div>
+  <div class="verd"><div class="verd-ic">⚡</div><div class="verd-b"><h3>The Strategic Verdict</h3><p>The people who win in the AI era are not those who use AI the most — they are those who combine irreplaceable domain expertise with AI leverage. Build your domain expertise. Learn AI. Connect the two. That intersection is your moat.</p></div></div>
+  <div class="vol-complete">
+    <div class="vc-ey">Volume II Complete</div>
+    <p>Your AI strategy is defined. Now execute.</p>
+    <button class="nbtn" onclick="openVol(2)">Continue to Volume III: Business →</button>
+  </div>
+</div>
+</div><!-- end v1 -->
+<!-- VOLUME III: BUSINESS -->
+<div class="vwrap" id="v2">
+<div class="vhdr" data-roman="III">
+  <div class="vhdr-ey">Volume III · The Next Move™</div>
+  <h1 class="vhdr-t">Business</h1>
+  <p class="vhdr-s">The Strategic Business Decision System</p>
+  <p class="vhdr-d">The business model you choose in your 20s defines the ceiling of your 30s. Not all revenue is equal. Not all business models scale the same way. This volume helps you choose the right model for your current situation — and avoid models that look attractive but trap you in low-leverage labor.</p>
+</div>
+<div class="chnav" id="cn2">
+  <button class="chtab active" onclick="showCh(2,0)">Choosing Your Model</button>
+  <button class="chtab" onclick="showCh(2,1)">Agency vs. Products</button>
+  <button class="chtab" onclick="showCh(2,2)">Creator vs. Consultant</button>
+  <button class="chtab" onclick="showCh(2,3)">Your Business Roadmap</button>
+</div>
+
+<!-- CH 2-0 -->
+<div class="chcon active" id="c2-0">
+  <div class="ch-ey">Chapter 1 · Business Decisions</div>
+  <h2 class="ch-t">The Business Model Decision</h2>
+  <p class="ch-s">Not all revenue is created equal</p>
+  <div class="ch-lead">The single most important structural decision in building a business is not your product, marketing, or pricing. It is your business model. A great model with a mediocre product will outperform a mediocre model with a great product — every time.</div>
+  <h3 class="sec-t">Business Models Ranked by Leverage</h3>
+  <table class="rtable"><thead><tr><th>Model</th><th>Leverage</th><th>Income Ceiling</th><th>Time to Revenue</th><th>Capital Required</th></tr></thead>
+  <tbody>
+    <tr><td>SaaS / Software</td><td class="g">Extreme</td><td class="g">Unlimited</td><td class="b">12–24 months</td><td class="m">Medium</td></tr>
+    <tr><td>Digital Products</td><td class="g">High</td><td class="g">High</td><td class="g">1–3 months</td><td class="g">Low</td></tr>
+    <tr><td>Community / Memberships</td><td class="g">High</td><td class="g">High</td><td class="m">3–6 months</td><td class="g">Low</td></tr>
+    <tr><td>Consulting / Advisory</td><td class="m">Medium</td><td class="m">Medium-High</td><td class="g">1–4 weeks</td><td class="g">Very Low</td></tr>
+    <tr><td>Agency (Services)</td><td class="b">Low</td><td class="m">Medium</td><td class="g">1–8 weeks</td><td class="g">Low</td></tr>
+    <tr><td>Creator / Audience</td><td class="m">Medium-High</td><td class="g">High</td><td class="b">6–24 months</td><td class="g">Low</td></tr>
+    <tr><td>E-Commerce / Physical</td><td class="b">Low</td><td class="m">Medium</td><td class="m">3–6 months</td><td class="b">High</td></tr>
+  </tbody></table>
+  <div class="ibox"><div class="bl">💡 The Leverage Principle</div><p>Leverage is the ability to earn more without working more. Agency work is low-leverage because revenue is tied to your hours. SaaS and digital products are high-leverage because you build once and sell many times. In your 20s, optimize for learning first and leverage second — but always have a plan to transition from low to high-leverage models.</p></div>
+  <div class="wbox"><div class="bl">⚠ The Agency Trap</div><p>Agencies are the most common first business — and the most dangerous trap. They generate revenue quickly and feel like entrepreneurship. But they scale poorly: revenue grows linearly with headcount, margins shrink as you hire, and you end up running a people-management business instead of a product business. Start an agency as a bridge, not a destination.</p></div>
+  <div class="sc"><h3>Business Model Fit Assessment</h3><p class="scsub">Rate each factor. 1 = not me · 10 = completely me</p>
+    <div class="srow"><div class="slbl">I have technical skills to build software</div><div class="sinp"><input type="range" min="1" max="10" value="5" oninput="us('d0',this.value)"><span class="sval" id="d0">5</span></div></div>
+    <div class="srow"><div class="slbl">I have an existing audience or distribution channel</div><div class="sinp"><input type="range" min="1" max="10" value="5" oninput="us('d1',this.value)"><span class="sval" id="d1">5</span></div></div>
+    <div class="srow"><div class="slbl">I need income within the next 60 days</div><div class="sinp"><input type="range" min="1" max="10" value="5" oninput="us('d2',this.value)"><span class="sval" id="d2">5</span></div></div>
+    <div class="srow"><div class="slbl">I have specific expertise clients will pay a premium for</div><div class="sinp"><input type="range" min="1" max="10" value="5" oninput="us('d3',this.value)"><span class="sval" id="d3">5</span></div></div>
+    <div class="stot"><span class="sl">High 1+2 → SaaS/Product · High 2+3 → Agency · High 3+4 → Consulting</span><span class="sv" id="d-tot">20/40</span></div>
+    <p class="sverd" id="d-vrd">→ Evaluate by income urgency and existing skill set</p>
+  </div>
+  <div class="ws"><h3>Your Business Model Decision</h3><p class="wssub">Define your starting point and ultimate destination.</p>
+    <div class="fi"><label>The business model I will start with (for cashflow):</label><textarea rows="1" placeholder="e.g. Consulting / Freelance services / Agency"></textarea></div>
+    <div class="fi"><label>The business model I want to transition to in 3–5 years:</label><textarea rows="1" placeholder="e.g. SaaS / Digital products / Membership community"></textarea></div>
+    <div class="fi"><label>The specific problem I will solve and for whom:</label><textarea rows="2" placeholder="I help [target client] solve [specific problem] through [specific method]"></textarea></div>
+  </div>
+  <div class="verd"><div class="verd-ic">⚡</div><div class="verd-b"><h3>The Strategic Verdict</h3><p>The sequence that works: Service → Product. Start with a service business to generate income and understand client problems deeply. Then productize the solution. Skipping directly to SaaS or digital products without service experience is building in the dark. Most successful bootstrapped founders went through a service phase first.</p></div></div>
+  <button class="nbtn" onclick="showCh(2,1)">Next: Agency vs. Digital Products →</button>
+</div>
+
+<!-- CH 2-1 -->
+<div class="chcon" id="c2-1">
+  <div class="ch-ey">Chapter 2 · Business Decisions</div>
+  <h2 class="ch-t">Agency vs. Digital Products</h2>
+  <p class="ch-s">Time-for-money vs. build-once, sell-always</p>
+  <div class="ch-lead">An agency sells your time. A digital product sells your knowledge or software — once, and then again, and again. These two models create completely different businesses, lifestyles, and wealth trajectories. Understanding the difference may be the most important business decision you make in your 20s.</div>
+  <div class="cgrid">
+    <div class="ccard"><h4>Agency Model</h4><ul>
+      <li>Revenue: fast (1–8 weeks from zero)</li>
+      <li>Margin: 30–60% after team costs</li>
+      <li>Scale: requires more people to grow</li>
+      <li>Client dependency: high</li>
+      <li>Personal leverage: low</li>
+      <li>Exit value: low (people business)</li>
+    </ul></div>
+    <div class="ccard win"><h4>Digital Products</h4><ul>
+      <li>Revenue: slower (3–12 months typically)</li>
+      <li>Margin: 70–95% (near-zero COGS)</li>
+      <li>Scale: unlimited without team growth</li>
+      <li>Client dependency: none (audience-dependent)</li>
+      <li>Personal leverage: very high</li>
+      <li>Exit value: high (recurring revenue multiple)</li>
+    </ul></div>
+  </div>
+  <div class="ibox"><div class="bl">💡 The Hybrid Path</div><p>The smartest founders use agency revenue to fund product development. Run the agency at 50–60% of your capacity. Use the remaining time and cash flow to build the product. When product revenue exceeds your salary needs, wind down the agency. This is not theory — it is the actual path most successful bootstrapped founders took.</p></div>
+  <div class="ws"><h3>Agency vs. Product Worksheet</h3><p class="wssub">Be specific about both paths.</p>
+    <div class="fi"><label>If I built an agency, I would offer this specific service:</label><textarea rows="2" placeholder="e.g. AI automation for e-commerce / Performance marketing for B2B SaaS / Financial modeling for startups"></textarea></div>
+    <div class="fi"><label>If I built a digital product, it would solve this specific problem:</label><textarea rows="2" placeholder="e.g. A template library for financial analysts / A course on X skill / A SaaS for Y workflow"></textarea></div>
+    <div class="fi"><label>My income target in 12 months:</label><textarea rows="1" placeholder="€___ / month"></textarea></div>
+    <div class="fi"><label>Given my income urgency, I will start with: Agency · Product · Hybrid — and why:</label><textarea rows="2" placeholder="Write your reasoning."></textarea></div>
+  </div>
+  <div class="verd"><div class="verd-ic">⚡</div><div class="verd-b"><h3>The Strategic Verdict</h3><p>If you need income now: start an agency or consulting practice. If you have 6–12 months of runway: go directly to digital products. If you want the safest path to product income: run both simultaneously. The goal is to escape time-for-money as quickly as your financial situation allows.</p></div></div>
+  <button class="nbtn" onclick="showCh(2,2)">Next: Creator vs. Consultant →</button>
+</div>
+
+<!-- CH 2-2 -->
+<div class="chcon" id="c2-2">
+  <div class="ch-ey">Chapter 3 · Business Decisions</div>
+  <h2 class="ch-t">Creator Business vs. Consulting</h2>
+  <p class="ch-s">Public audience vs. private expertise — two paths, same destination</p>
+  <div class="ch-lead">The creator economy and the consulting world are converging. The best consultants build audiences. The best creators sell expertise. But starting in each world requires different initial moves, builds different assets, and attracts different clients.</div>
+  <div class="cgrid">
+    <div class="ccard"><h4>Creator Business</h4><ul>
+      <li>Asset: audience and distribution</li>
+      <li>Income: slow to start, scales with audience</li>
+      <li>Leverage: very high (platform distribution)</li>
+      <li>Personal brand required: yes</li>
+      <li>Risk: algorithm and platform dependency</li>
+      <li>Best for: educators, opinionated experts, storytellers</li>
+    </ul></div>
+    <div class="ccard"><h4>Consulting</h4><ul>
+      <li>Asset: expertise and client relationships</li>
+      <li>Income: fast to start, plateaus without leverage</li>
+      <li>Leverage: low (without productizing)</li>
+      <li>Personal brand: optional but helps</li>
+      <li>Risk: client concentration</li>
+      <li>Best for: deep specialists, operators, advisors</li>
+    </ul></div>
+  </div>
+  <div class="ibox"><div class="bl">💡 The Convergence Strategy</div><p>The most powerful modern business: Consulting → builds expertise and case studies → Creator business → builds audience that generates consulting leads → Digital products → monetizes audience at scale. Each phase funds the next. This is the structure behind every "overnight success" in the expert economy.</p></div>
+  <div class="ws"><h3>Creator vs. Consultant Worksheet</h3><p class="wssub">Map your path.</p>
+    <div class="fi"><label>The expertise I could consult on today:</label><textarea rows="1" placeholder=""></textarea></div>
+    <div class="fi"><label>The topic I could build a public audience around:</label><textarea rows="1" placeholder=""></textarea></div>
+    <div class="fi"><label>Are these the same? If not, which has more market demand?</label><textarea rows="2" placeholder=""></textarea></div>
+    <div class="fi"><label>My starting point — Consulting · Creator · Both — and why:</label><textarea rows="2" placeholder=""></textarea></div>
+  </div>
+  <div class="verd"><div class="verd-ic">⚡</div><div class="verd-b"><h3>The Strategic Verdict</h3><p>Start with consulting if you need income. Start with creator if you have runway and want long-term leverage. The ideal path: run both — take 3–5 high-quality consulting clients to fund and inform your creator content. Your client work gives you case studies. Your creator content generates consulting leads. Within 18–24 months, productize what you've proven.</p></div></div>
+  <button class="nbtn" onclick="showCh(2,3)">Next: Your Business Roadmap →</button>
+</div>
+
+<!-- CH 2-3 -->
+<div class="chcon" id="c2-3">
+  <div class="ch-ey">Chapter 4 · Business Decisions</div>
+  <h2 class="ch-t">Your 24-Month Business Roadmap</h2>
+  <p class="ch-s">Strategy without execution is fiction</p>
+  <div class="ch-lead">This chapter consolidates everything into a concrete 24-month plan — with clear milestones, decision points, and pivot criteria. The goal is not to predict the future. The goal is to have a direction strong enough to execute on and flexible enough to adapt.</div>
+  <div class="asteps">
+    <div class="astep"><div class="anum">M1</div><div class="abody"><h4>Month 1–3: Validate and Revenue</h4><p>Generate your first €1,000 of revenue. This is your only goal. Do not build a website, logo, or brand first. Sell something to one person. Get proof that someone will pay you for your skill or product.</p></div></div>
+    <div class="astep"><div class="anum">M2</div><div class="abody"><h4>Month 3–6: Systematize</h4><p>Create a repeatable process for acquiring clients or customers. Document your delivery. Aim for €3,000–5,000/month. Focus on retention and referrals over new acquisition.</p></div></div>
+    <div class="astep"><div class="anum">M3</div><div class="abody"><h4>Month 6–12: Scale or Productize</h4><p>If agency: hire your first contractor. If product: launch and drive traffic. Target €5,000–10,000/month. Start building the higher-leverage version of your current model in parallel.</p></div></div>
+    <div class="astep"><div class="anum">M4</div><div class="abody"><h4>Month 12–24: Leverage</h4><p>Transition from time-for-money to systems. Launch your first product if you haven't. Build audience. Target €10,000–25,000/month. Evaluate your ceiling and decide whether to scale or exit and start over.</p></div></div>
+  </div>
+  <div class="ws"><h3>Your 24-Month Blueprint</h3><p class="wssub">Fill in your specific milestones.</p>
+    <div class="fi"><label>Month 3 revenue target:</label><textarea rows="1" placeholder="€___ / month"></textarea></div>
+    <div class="fi"><label>Month 12 revenue target:</label><textarea rows="1" placeholder="€___ / month"></textarea></div>
+    <div class="fi"><label>Month 24 revenue target:</label><textarea rows="1" placeholder="€___ / month"></textarea></div>
+    <div class="fi"><label>My model transition plan (from → to → to):</label><textarea rows="2" placeholder="e.g. Consulting (months 1–12) → Digital Products (12–24) → SaaS (year 3+)"></textarea></div>
+    <div class="fi"><label>My pivot criteria — I will change direction if:</label><textarea rows="2" placeholder="e.g. Revenue doesn't reach €3,000/month by month 6"></textarea></div>
+  </div>
+  <div class="verd"><div class="verd-ic">⚡</div><div class="verd-b"><h3>The Strategic Verdict</h3><p>The best business you can build is the one you actually execute. Most people spend more time planning than building. Set your 90-day milestone, start immediately, and iterate. The market will teach you more in 3 months of real activity than 3 years of planning.</p></div></div>
+  <div class="vol-complete">
+    <div class="vc-ey">Volume III Complete</div>
+    <p>Your business strategy is defined. Now execute the first step.</p>
+    <button class="nbtn" onclick="openVol(3)">Continue to Volume IV: Investing →</button>
+  </div>
+</div>
+</div><!-- end v2 -->
+<!-- VOLUME IV: INVESTING -->
+<div class="vwrap" id="v3">
+<div class="vhdr" data-roman="IV">
+  <div class="vhdr-ey">Volume IV · The Next Move™</div>
+  <h1 class="vhdr-t">Investing</h1>
+  <p class="vhdr-s">The Strategic Wealth Allocation System</p>
+  <p class="vhdr-d">Most people spend their 20s optimizing income but neglecting capital. This volume gives you the framework for deploying capital intelligently — based on your age, income, risk profile, and long-term wealth goals.</p>
+</div>
+<div class="chnav" id="cn3">
+  <button class="chtab active" onclick="showCh(3,0)">Wealth Architecture</button>
+  <button class="chtab" onclick="showCh(3,1)">Asset Classes Compared</button>
+  <button class="chtab" onclick="showCh(3,2)">Portfolio Design</button>
+  <button class="chtab" onclick="showCh(3,3)">Your Wealth Plan</button>
+</div>
+
+<!-- CH 3-0 -->
+<div class="chcon active" id="c3-0">
+  <div class="ch-ey">Chapter 1 · Investing Decisions</div>
+  <h2 class="ch-t">The Wealth Architecture</h2>
+  <p class="ch-s">Building wealth is not about picking stocks — it is about building a system</p>
+  <div class="ch-lead">Wealth is not built by finding the best investment. It is built by designing a system that automatically converts income into assets over time. Before you invest a single euro, you need to understand the structure of your wealth architecture.</div>
+  <div class="ibox"><div class="bl">💡 The Four-Layer Wealth Stack</div><p><strong>Layer 1 — Emergency Fund:</strong> 3–6 months of expenses in cash. Non-negotiable before investing anything else. <strong>Layer 2 — Tax-Advantaged Accounts:</strong> Use available tax vehicles (bAV in Germany) first. Never leave employer matching unclaimed. <strong>Layer 3 — Index Core:</strong> 70–80% of investable capital in broad-market ETFs. The engine of long-term wealth. <strong>Layer 4 — Satellite / Growth:</strong> 20–30% in higher-risk assets (individual stocks, crypto, angel).</p></div>
+  <div class="wbox"><div class="bl">⚠ The #1 Wealth Mistake in Your 20s</div><p>Waiting until you have "enough" money to invest. A €200/month investment at 8% annual return started at age 22 is worth more at 65 than a €500/month investment started at 35. Compound interest punishes delay more severely than it rewards late increases. Start immediately, regardless of amount.</p></div>
+  <h3 class="sec-t">The Compounding Reality</h3>
+  <table class="rtable"><thead><tr><th>Monthly Investment</th><th>Start Age</th><th>Value at 65 (8% p.a.)</th><th>Total Invested</th></tr></thead>
+  <tbody>
+    <tr><td>€200 / month</td><td class="g">22</td><td class="g">~€925,000</td><td>€103,200</td></tr>
+    <tr><td>€200 / month</td><td class="m">30</td><td class="m">~€525,000</td><td>€84,000</td></tr>
+    <tr><td>€500 / month</td><td class="b">35</td><td class="m">~€745,000</td><td>€180,000</td></tr>
+    <tr><td>€1,000 / month</td><td class="b">40</td><td class="m">~€745,000</td><td>€300,000</td></tr>
+  </tbody></table>
+  <div class="ws"><h3>Your Wealth Architecture Assessment</h3><p class="wssub">Current state analysis.</p>
+    <div class="fi"><label>My monthly net income:</label><textarea rows="1" placeholder="€___ / month"></textarea></div>
+    <div class="fi"><label>My monthly fixed expenses:</label><textarea rows="1" placeholder="€___ / month"></textarea></div>
+    <div class="fi"><label>My current savings rate:</label><textarea rows="1" placeholder="___% of income"></textarea></div>
+    <div class="fi"><label>Emergency fund status: None · 1 month · 3 months · 6+ months</label><textarea rows="1" placeholder=""></textarea></div>
+    <div class="fi"><label>The amount I can invest monthly starting now:</label><textarea rows="1" placeholder="€___ / month"></textarea></div>
+  </div>
+  <div class="verd"><div class="verd-ic">⚡</div><div class="verd-b"><h3>The Strategic Verdict</h3><p>Your highest investment priority in your 20s is not the asset class with the best return — it is yourself. Doubling your income from €40k to €80k by age 28 creates far more wealth than optimizing a €5,000 investment portfolio. Invest in yourself first. Then invest your returns systematically through the four-layer stack.</p></div></div>
+  <button class="nbtn" onclick="showCh(3,1)">Next: Asset Classes Compared →</button>
+</div>
+
+<!-- CH 3-1 -->
+<div class="chcon" id="c3-1">
+  <div class="ch-ey">Chapter 2 · Investing Decisions</div>
+  <h2 class="ch-t">Asset Classes: The Honest Comparison</h2>
+  <p class="ch-s">What actually works — and what is mostly noise</p>
+  <div class="ch-lead">Every asset class has an advocate selling the dream. ETF investors sell passive simplicity. Real estate investors sell tangibility and leverage. Crypto investors sell asymmetric upside. The truth: every asset class has a legitimate role — but most people dramatically over-allocate to the ones they understand least.</div>
+  <table class="rtable"><thead><tr><th>Asset Class</th><th>Expected Return</th><th>Risk</th><th>Liquidity</th><th>Verdict for 20s</th></tr></thead>
+  <tbody>
+    <tr><td>Broad ETFs (MSCI World)</td><td class="g">7–9% p.a.</td><td class="g">Low-Medium</td><td class="g">High</td><td class="g">✓ Core holding</td></tr>
+    <tr><td>Individual Stocks</td><td class="m">Highly variable</td><td class="b">High</td><td class="g">High</td><td class="m">5–15% max</td></tr>
+    <tr><td>Real Estate</td><td class="m">4–7% + leverage</td><td class="m">Medium</td><td class="b">Low</td><td class="m">When income allows</td></tr>
+    <tr><td>Bitcoin</td><td class="m">High volatility</td><td class="b">Very High</td><td class="g">High</td><td class="m">1–5% speculative</td></tr>
+    <tr><td>Altcoins</td><td class="b">Speculative</td><td class="b">Extreme</td><td class="m">Medium</td><td class="b">✗ Avoid</td></tr>
+    <tr><td>Startup / Angel</td><td class="g">0 or 100x</td><td class="b">Very High</td><td class="b">Very Low</td><td class="m">Only with expertise</td></tr>
+    <tr><td>Cash / Savings</td><td class="b">2–3% (below inflation)</td><td class="g">None</td><td class="g">Perfect</td><td class="m">Emergency fund only</td></tr>
+  </tbody></table>
+  <div class="wbox"><div class="bl">⚠ The Overconfidence Trap</div><p>Most individual investors who believe they can beat the market cannot. 85–90% of active fund managers underperform their benchmark index after fees over 10 years. Individual investors do even worse. The math strongly supports broad, low-cost index funds as the core of any retail investor's portfolio. This is not an opinion — it is 50 years of documented evidence.</p></div>
+  <div class="ws"><h3>Asset Class Allocation Worksheet</h3><p class="wssub">Allocate your hypothetical €10,000 investment portfolio.</p>
+    <div class="fi"><label>ETFs / Index Funds (recommended: 60–80%):</label><textarea rows="1" placeholder="€___"></textarea></div>
+    <div class="fi"><label>Individual Stocks (recommended: 5–15%):</label><textarea rows="1" placeholder="€___"></textarea></div>
+    <div class="fi"><label>Bitcoin (recommended: 1–5% max, speculative only):</label><textarea rows="1" placeholder="€___"></textarea></div>
+    <div class="fi"><label>Startup / Angel investments (only with domain expertise):</label><textarea rows="1" placeholder="€___"></textarea></div>
+    <div class="fi"><label>Cash reserve (emergency fund only):</label><textarea rows="1" placeholder="€___"></textarea></div>
+  </div>
+  <div class="verd"><div class="verd-ic">⚡</div><div class="verd-b"><h3>The Strategic Verdict</h3><p>In your 20s: 70–80% broad ETFs, 10–15% individual stocks of companies you understand deeply, 5% speculative (Bitcoin or early-stage bets). As income grows, consider real estate post-30. The goal is not maximum return — it is consistent, compounding growth with manageable downside. Time in market beats timing the market. Every single time.</p></div></div>
+  <button class="nbtn" onclick="showCh(3,2)">Next: Portfolio Design →</button>
+</div>
+
+<!-- CH 3-2 -->
+<div class="chcon" id="c3-2">
+  <div class="ch-ey">Chapter 3 · Investing Decisions</div>
+  <h2 class="ch-t">Portfolio Design by Life Stage</h2>
+  <p class="ch-s">The allocation that fits your age, income, and risk profile</p>
+  <div class="ch-lead">There is no universal perfect portfolio. The right allocation depends on your age, income stability, time horizon, and psychological ability to tolerate drawdowns. This chapter gives you the framework to design your specific portfolio — not a template someone else sold you.</div>
+  <div class="cgrid">
+    <div class="ccard win"><h4>Growth Profile (Age 20–30)</h4><ul>
+      <li>70–80% MSCI World / S&P 500 ETF</li>
+      <li>10–15% Emerging Markets ETF</li>
+      <li>5–10% Individual stocks (high conviction)</li>
+      <li>2–5% Bitcoin (speculation only)</li>
+      <li>Goal: maximize compounding runway</li>
+    </ul></div>
+    <div class="ccard"><h4>Balanced Profile (Age 30–45)</h4><ul>
+      <li>50–60% Broad market ETFs</li>
+      <li>15–20% Real estate (direct or REITs)</li>
+      <li>10–15% Individual stocks</li>
+      <li>5–10% Alternative assets</li>
+      <li>Goal: growth with income generation</li>
+    </ul></div>
+  </div>
+  <div class="sc"><h3>Risk Profile Scorecard</h3><p class="scsub">Rate each statement. 1 = strongly disagree · 10 = strongly agree</p>
+    <div class="srow"><div class="slbl">I can tolerate a 40% portfolio drop without panic-selling</div><div class="sinp"><input type="range" min="1" max="10" value="5" oninput="us('e0',this.value)"><span class="sval" id="e0">5</span></div></div>
+    <div class="srow"><div class="slbl">My income is stable and not at risk in a recession</div><div class="sinp"><input type="range" min="1" max="10" value="5" oninput="us('e1',this.value)"><span class="sval" id="e1">5</span></div></div>
+    <div class="srow"><div class="slbl">I have 20+ years before I need this capital</div><div class="sinp"><input type="range" min="1" max="10" value="5" oninput="us('e2',this.value)"><span class="sval" id="e2">5</span></div></div>
+    <div class="srow"><div class="slbl">I understand and accept volatility as part of long-term investing</div><div class="sinp"><input type="range" min="1" max="10" value="5" oninput="us('e3',this.value)"><span class="sval" id="e3">5</span></div></div>
+    <div class="stot"><span class="sl">Risk Tolerance Score (higher = more growth-oriented allocation)</span><span class="sv" id="e-tot">20/40</span></div>
+    <p class="sverd" id="e-vrd">→ Moderate profile — balanced growth portfolio</p>
+  </div>
+  <div class="ws"><h3>Your Portfolio Design</h3><p class="wssub">Fill in your actual target allocations.</p>
+    <div class="fi"><label>Core ETF holding (name + %):</label><textarea rows="1" placeholder="e.g. Vanguard FTSE All-World UCITS ETF (VWCE) — 70%"></textarea></div>
+    <div class="fi"><label>Second position (asset class + %):</label><textarea rows="1" placeholder="e.g. Emerging Markets ETF — 10%"></textarea></div>
+    <div class="fi"><label>Satellite positions (stocks / crypto / alternatives + %):</label><textarea rows="1" placeholder=""></textarea></div>
+    <div class="fi"><label>Monthly automated investment amount:</label><textarea rows="1" placeholder="€___ / month via savings plan (Sparplan)"></textarea></div>
+    <div class="fi"><label>My broker / platform for each asset class:</label><textarea rows="2" placeholder="e.g. ETFs via Trade Republic / Stocks via IBKR / Crypto via Coinbase"></textarea></div>
+  </div>
+  <div class="verd"><div class="verd-ic">⚡</div><div class="verd-b"><h3>The Strategic Verdict</h3><p>Design your portfolio, automate your contributions, and resist the urge to constantly change it. The biggest mistake investors make is not having a bad portfolio — it is constantly reacting to market news and overtrading. Set your allocation, automate monthly contributions, review once per year. Boring is profitable.</p></div></div>
+  <button class="nbtn" onclick="showCh(3,3)">Next: Your Wealth Plan →</button>
+</div>
+
+<!-- CH 3-3 -->
+<div class="chcon" id="c3-3">
+  <div class="ch-ey">Chapter 4 · Investing Decisions</div>
+  <h2 class="ch-t">Your Personal Wealth Allocation Plan</h2>
+  <p class="ch-s">The one-page document you will actually use</p>
+  <div class="ch-lead">A wealth plan that stays in your head is not a plan. This final chapter consolidates everything into a one-page allocation plan you can implement immediately and review annually. Write it down. Automate it. Then leave it alone.</div>
+  <div class="ws"><h3>Your One-Page Wealth Plan</h3><p class="wssub">Complete every field. This is your executable plan.</p>
+    <div class="fi"><label>My current age / target financial independence age:</label><textarea rows="1" placeholder="Age: ___ / Target: ___"></textarea></div>
+    <div class="fi"><label>My current investable capital:</label><textarea rows="1" placeholder="€___"></textarea></div>
+    <div class="fi"><label>My monthly investment capacity:</label><textarea rows="1" placeholder="€___ / month"></textarea></div>
+    <div class="fi"><label>My target portfolio size at age 40:</label><textarea rows="1" placeholder="€___"></textarea></div>
+    <div class="fi"><label>My complete allocation (must sum to 100%):</label><textarea rows="2" placeholder="ETFs: ___% / Stocks: ___% / Crypto: ___% / Real estate: ___% / Cash: ___% = 100%"></textarea></div>
+    <div class="fi"><label>My annual review date:</label><textarea rows="1" placeholder="e.g. Every January 1st"></textarea></div>
+    <div class="fi"><label>The one rule I will never break (my investment constitution):</label><textarea rows="2" placeholder="e.g. Never sell during a market drop of less than 40%. Never hold more than 5% in any single stock. Always automate before spending."></textarea></div>
+  </div>
+  <div class="verd"><div class="verd-ic">⚡</div><div class="verd-b"><h3>The Strategic Verdict</h3><p>The investor who follows a simple plan consistently over 30 years beats the investor who constantly optimizes and reacts over 30 years — almost without exception. Your edge is not stock-picking. Your edge is discipline, time, and automation. Set it up. Walk away. Check in once a year.</p></div></div>
+  <div class="vol-complete">
+    <div class="vc-ey">Volume IV Complete</div>
+    <p>Your wealth strategy is designed. Automate and execute.</p>
+    <button class="nbtn" onclick="openVol(4)">Continue to Volume V: Network →</button>
+  </div>
+</div>
+</div><!-- end v3 -->
+<!-- VOLUME V: NETWORK -->
+<div class="vwrap" id="v4">
+<div class="vhdr" data-roman="V">
+  <div class="vhdr-ey">Volume V · The Next Move™</div>
+  <h1 class="vhdr-t">Network</h1>
+  <p class="vhdr-s">The Strategic Relationship System</p>
+  <p class="vhdr-d">Your network is the single most underestimated driver of career and wealth outcomes. The right relationship at the right moment can compress 5 years of effort into 6 months. This volume helps you build strategic relationships deliberately — not randomly.</p>
+</div>
+<div class="chnav" id="cn4">
+  <button class="chtab active" onclick="showCh(4,0)">Network Architecture</button>
+  <button class="chtab" onclick="showCh(4,1)">Mentors & Advisors</button>
+  <button class="chtab" onclick="showCh(4,2)">Positioning & Communities</button>
+  <button class="chtab" onclick="showCh(4,3)">Your Network Plan</button>
+</div>
+
+<!-- CH 4-0 -->
+<div class="chcon active" id="c4-0">
+  <div class="ch-ey">Chapter 1 · Network Decisions</div>
+  <h2 class="ch-t">Your Network Architecture</h2>
+  <p class="ch-s">Most people's networks are accidents. Yours doesn't have to be.</p>
+  <div class="ch-lead">The average person builds their network through proximity — they befriend colleagues, classmates, and neighbors. This is the least effective way to build a network for ambitious goals. Strategic networking is not about collecting contacts. It is about deliberately cultivating relationships with people who are either where you want to be, or on the same trajectory.</div>
+  <div class="ibox"><div class="bl">💡 The Network Proximity Effect</div><p>Your income tends toward the average of the 5 people you spend the most time with. This is not mysticism — it is the result of shared standards, mutual introductions, information flow, and psychological benchmarking. If everyone around you earns €50k and considers it success, your ambition calibration adjusts downward. Proximity to high performers upgrades your defaults.</p></div>
+  <h3 class="sec-t">The Three Network Circles</h3>
+  <table class="rtable"><thead><tr><th>Circle</th><th>Who</th><th>Function</th><th>Ideal Size</th></tr></thead>
+  <tbody>
+    <tr><td>Inner Circle</td><td>Peers at your level or above</td><td>Mutual accountability, shared standards</td><td class="g">3–7 people</td></tr>
+    <tr><td>Mentor Network</td><td>People 10+ years ahead of you</td><td>Direction, pattern recognition, introductions</td><td class="g">2–5 people</td></tr>
+    <tr><td>Weak Ties Network</td><td>Broad industry connections</td><td>Opportunity flow, information, referrals</td><td class="m">100–500 people</td></tr>
+  </tbody></table>
+  <div class="wbox"><div class="bl">⚠ The Loyalty Trap</div><p>Many ambitious people stay in social circles out of loyalty to old friendships no longer aligned with their goals. There is a difference between ending friendships and strategically investing less time in relationships that don't support your growth. You can love people without letting their ceiling become your ceiling. Deliberately expand upward.</p></div>
+  <div class="sc"><h3>Current Network Assessment</h3><p class="scsub">Honest evaluation of your network quality. 1 = poor · 10 = excellent</p>
+    <div class="srow"><div class="slbl">My closest 5 peers are on ambitious career/wealth trajectories</div><div class="sinp"><input type="range" min="1" max="10" value="5" oninput="us('f0',this.value)"><span class="sval" id="f0">5</span></div></div>
+    <div class="srow"><div class="slbl">I have at least one mentor who is 10+ years ahead of me</div><div class="sinp"><input type="range" min="1" max="10" value="5" oninput="us('f1',this.value)"><span class="sval" id="f1">5</span></div></div>
+    <div class="srow"><div class="slbl">My network regularly surfaces relevant opportunities for me</div><div class="sinp"><input type="range" min="1" max="10" value="5" oninput="us('f2',this.value)"><span class="sval" id="f2">5</span></div></div>
+    <div class="srow"><div class="slbl">I regularly give value to my network (introductions, knowledge, help)</div><div class="sinp"><input type="range" min="1" max="10" value="5" oninput="us('f3',this.value)"><span class="sval" id="f3">5</span></div></div>
+    <div class="stot"><span class="sl">Network Quality Score</span><span class="sv" id="f-tot">20/40</span></div>
+    <p class="sverd" id="f-vrd">→ Significant gaps — prioritize network investment</p>
+  </div>
+  <div class="ws"><h3>Network Audit</h3><p class="wssub">Audit your current relationships honestly.</p>
+    <div class="fi"><label>The 5 people I spend the most time with and their career trajectory:</label><textarea rows="3" placeholder="1. ___ (trajectory) / 2. ___ / 3. ___ / 4. ___ / 5. ___"></textarea></div>
+    <div class="fi"><label>My current mentors (name + what they offer):</label><textarea rows="2" placeholder="If none — write 'Gap — priority to fill'"></textarea></div>
+    <div class="fi"><label>The 3 people I most want to be connected to in the next 12 months:</label><textarea rows="2" placeholder="1. ___ / 2. ___ / 3. ___"></textarea></div>
+  </div>
+  <div class="verd"><div class="verd-ic">⚡</div><div class="verd-b"><h3>The Strategic Verdict</h3><p>Your network is an asset. Like any asset, it requires deliberate investment and strategic allocation of attention. Most people manage their network passively — they respond to whoever reaches out. Strategic networkers are intentional: they identify specific people they want to know, create genuine reasons to connect, and maintain relationships consistently over time. The quality of your network will be one of the top 3 determinants of your lifetime income.</p></div></div>
+  <button class="nbtn" onclick="showCh(4,1)">Next: Mentors & Advisors →</button>
+</div>
+
+<!-- CH 4-1 -->
+<div class="chcon" id="c4-1">
+  <div class="ch-ey">Chapter 2 · Network Decisions</div>
+  <h2 class="ch-t">Mentors & Strategic Advisors</h2>
+  <p class="ch-s">The fastest way to compress a decade of learning into 2 years</p>
+  <div class="ch-lead">The single highest-ROI network investment for anyone under 30 is finding mentors who have already solved the problems you are facing. A mentor does not give you the answer — they give you the pattern recognition that took them 10 years to build, compressed into a conversation.</div>
+  <div class="ibox"><div class="bl">💡 What Mentors Actually Give You</div><p>Most people seek mentors for advice. But the real value is different: <strong>Introductions</strong> (a warm introduction from a trusted person is worth 50 cold outreaches). <strong>Calibration</strong> (mentors who have done extraordinary things reframe your ceiling of what's possible). <strong>Early warnings</strong> (mistakes obvious in hindsight but invisible in the moment).</p></div>
+  <h3 class="sec-t">How to Get a Mentor Who Doesn't Have Time for You</h3>
+  <div class="asteps">
+    <div class="astep"><div class="anum">1</div><div class="abody"><h4>Give before you ask</h4><p>Share relevant research, make an introduction, write a thoughtful comment on their work — three times before making any request. The first ask from a stranger gets ignored. The first ask from someone who has already contributed gets considered.</p></div></div>
+    <div class="astep"><div class="anum">2</div><div class="abody"><h4>Ask for 20 minutes, not mentorship</h4><p>"Would you be open to a 20-minute call to share how you made the transition from consulting to PE?" is 10x more likely to get a yes than "Could you mentor me?" Be specific. Be brief. Make it easy to say yes.</p></div></div>
+    <div class="astep"><div class="anum">3</div><div class="abody"><h4>Deliver value before asking again</h4><p>After the first meeting, send a thank-you with specific takeaways. A week later, share something relevant to their work. Make every interaction valuable to them. Mentorship is earned through consistent demonstrated seriousness.</p></div></div>
+    <div class="astep"><div class="anum">4</div><div class="abody"><h4>Execute visibly and close the loop</h4><p>The fastest way to convert a one-time meeting into an ongoing relationship: do what they recommended and report back with results. People want to see their advice work. Closing the loop is the rarest thing in the world and the most powerful signal of seriousness.</p></div></div>
+  </div>
+  <div class="ws"><h3>Mentor Acquisition Plan</h3><p class="wssub">Target 2–3 specific people and design your approach.</p>
+    <div class="fi"><label>Mentor Target #1 (name, role, why they're relevant):</label><textarea rows="2" placeholder="Name: ___ / Role: ___ / Why: ___"></textarea></div>
+    <div class="fi"><label>How I will create the first genuine touch point:</label><textarea rows="2" placeholder="e.g. Comment on 3 LinkedIn posts / attend their talk / mutual introduction through ___"></textarea></div>
+    <div class="fi"><label>The value I will offer before making any request:</label><textarea rows="2" placeholder=""></textarea></div>
+    <div class="fi"><label>My outreach message (draft it here):</label><textarea rows="3" placeholder="Subject: Quick question from someone building in [their space]..."></textarea></div>
+  </div>
+  <div class="verd"><div class="verd-ic">⚡</div><div class="verd-b"><h3>The Strategic Verdict</h3><p>The most successful young professionals are not the most talented. They are the ones who found the right mentors early and executed on what they learned. The pattern is consistent: find someone 10 years ahead, get access to their network and pattern recognition, execute seriously, and compound. Two good mentors can be worth more than an MBA.</p></div></div>
+  <button class="nbtn" onclick="showCh(4,2)">Next: Positioning & Communities →</button>
+</div>
+
+<!-- CH 4-2 -->
+<div class="chcon" id="c4-2">
+  <div class="ch-ey">Chapter 3 · Network Decisions</div>
+  <h2 class="ch-t">Personal Positioning & Communities</h2>
+  <p class="ch-s">Being found instead of seeking — the highest-leverage networking strategy</p>
+  <div class="ch-lead">The highest-leverage networking strategy is not going to events — it is creating the conditions that bring the right people to you. A well-positioned LinkedIn profile, a clear public point of view, or a niche newsletter can generate better inbound relationships than years of attending industry events.</div>
+  <div class="cgrid">
+    <div class="ccard"><h4>Offline Communities</h4><ul>
+      <li>Alumni networks (university, company)</li>
+      <li>Industry conferences and events</li>
+      <li>Local business or investor groups</li>
+      <li>Mastermind groups (peer accountability)</li>
+      <li>Professional associations (CFA, CAIA, etc.)</li>
+    </ul></div>
+    <div class="ccard win"><h4>High-Quality Online Communities</h4><ul>
+      <li>Paid communities with high entry standards</li>
+      <li>Founder communities (YC alumni, Indie Hackers)</li>
+      <li>Finance & investment circles (niche Discord/Slack)</li>
+      <li>Cohort-based courses with active peer networks</li>
+      <li>LinkedIn and X/Twitter professional communities</li>
+    </ul></div>
+  </div>
+  <div class="ibox"><div class="bl">💡 The Positioning Formula</div><p>[Specific Expertise] + [Specific Audience] + [Clear Point of View] = Magnetic Positioning.<br><br>Example: "I help pre-Series A founders build investor-ready financial models and narratives." — Not: "I'm interested in finance and startups." The specificity is what makes you memorable, referable, and findable.</p></div>
+  <div class="ws"><h3>Your Personal Positioning Statement</h3><p class="wssub">Build your one-sentence positioning.</p>
+    <div class="fi"><label>I help [who]:</label><textarea rows="1" placeholder="e.g. early-stage founders / ambitious 20-somethings in finance / mid-career professionals transitioning to tech"></textarea></div>
+    <div class="fi"><label>Achieve [what outcome]:</label><textarea rows="1" placeholder="e.g. build investor-ready financial models / land their first IB role / scale to €10k/month"></textarea></div>
+    <div class="fi"><label>Through [your specific method or expertise]:</label><textarea rows="1" placeholder="e.g. 5 years of PE experience / AI-powered automation / systematic decision frameworks"></textarea></div>
+    <div class="fi"><label>My complete positioning statement:</label><textarea rows="2" placeholder="I help [who] achieve [outcome] through [method]."></textarea></div>
+    <div class="fi"><label>The platform I will build public presence on:</label><textarea rows="1" placeholder="LinkedIn / X (Twitter) / Newsletter / Podcast / YouTube"></textarea></div>
+  </div>
+  <div class="verd"><div class="verd-ic">⚡</div><div class="verd-b"><h3>The Strategic Verdict</h3><p>Invest in 1–2 high-quality communities, not 10 mediocre ones. Be active — contribute, introduce, share. And invest in your positioning so the right people can find you without you chasing them. The best networks are pull networks, not push networks. Build the signal. The right people will come to you.</p></div></div>
+  <button class="nbtn" onclick="showCh(4,3)">Next: Your Network Plan →</button>
+</div>
+
+<!-- CH 4-3 -->
+<div class="chcon" id="c4-3">
+  <div class="ch-ey">Chapter 4 · Network Decisions</div>
+  <h2 class="ch-t">Your Strategic Network Plan</h2>
+  <p class="ch-s">The 12-month execution roadmap for your relationship strategy</p>
+  <div class="ch-lead">Network-building without a plan is socializing. This final chapter gives you the concrete 12-month roadmap to systematically upgrade the quality and strategic value of your relationships.</div>
+  <div class="asteps">
+    <div class="astep"><div class="anum">Q1</div><div class="abody"><h4>Audit and Upgrade (Months 1–3)</h4><p>Complete your network audit. Identify 3 target mentors. Join 1 high-quality community. Set a goal of 2 strategic new connections per month. Update your LinkedIn with clear positioning.</p></div></div>
+    <div class="astep"><div class="anum">Q2</div><div class="abody"><h4>Build and Give (Months 4–6)</h4><p>Make 10 warm introductions between people in your network. Attend 2 offline events in your target industry. Schedule a coffee or call with 5 people you admire. Give before you ask — every single time.</p></div></div>
+    <div class="astep"><div class="anum">Q3</div><div class="abody"><h4>Establish Presence (Months 7–9)</h4><p>Start publishing your point of view publicly (LinkedIn, newsletter, or podcast). Become known for one specific thing in your field. Host a small dinner or event for 5–8 people in your industry. Create context for your ideal connections to find you.</p></div></div>
+    <div class="astep"><div class="anum">Q4</div><div class="abody"><h4>Evaluate and Deepen (Months 10–12)</h4><p>Review which relationships are generating the most value. Invest more time in the top 20%. Reduce investment in low-value connections. Plan year 2 with updated and more ambitious goals.</p></div></div>
+  </div>
+  <div class="ws"><h3>Your 12-Month Network Blueprint</h3><p class="wssub">Make every goal specific and measurable.</p>
+    <div class="fi"><label>The 1 community I will join in Q1:</label><textarea rows="1" placeholder=""></textarea></div>
+    <div class="fi"><label>My monthly new connection target:</label><textarea rows="1" placeholder="___ strategic new relationships per month"></textarea></div>
+    <div class="fi"><label>The public platform I will build presence on:</label><textarea rows="1" placeholder="LinkedIn / X / Newsletter / Podcast"></textarea></div>
+    <div class="fi"><label>The one offline event I will attend this quarter:</label><textarea rows="1" placeholder=""></textarea></div>
+    <div class="fi"><label>My network goal at month 12:</label><textarea rows="2" placeholder="e.g. 3 active mentors / 500 relevant LinkedIn connections / 1 mastermind group / advisory board seat"></textarea></div>
+  </div>
+  <div class="verd"><div class="verd-ic">⚡</div><div class="verd-b"><h3>The Strategic Verdict</h3><p>The most successful people are not the most talented — they are the most connected to the right people at the right moments. Build your network before you need it. Give value consistently. Maintain relationships over time. The ROI on a strategic relationship invested in over 10 years is incalculable.</p></div></div>
+
+  <!-- VAULT COMPLETE -->
+  <div style="text-align:center;margin-top:52px;padding:44px 32px;background:linear-gradient(135deg,rgba(201,162,39,.12),rgba(201,162,39,.04));border-radius:10px;border:1px solid rgba(201,162,39,.3);">
+    <div style="font-size:10px;letter-spacing:.25em;color:var(--gold);text-transform:uppercase;margin-bottom:18px;">The Next Move™ Vault — Complete</div>
+    <div style="font-family:'Playfair Display',serif;font-size:clamp(22px,4vw,36px);font-weight:700;color:var(--white);margin-bottom:14px;">You now have a system.</div>
+    <p style="font-size:15px;color:var(--g200);max-width:500px;margin:0 auto 32px;line-height:1.7;">Five decision frameworks. Hundreds of insights. Zero guesswork. One strategic advantage over everyone still operating on gut feeling.</p>
+    <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:28px;">
+      <div style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:4px;padding:10px 18px;font-size:12px;color:var(--g200);">Career System ✓</div>
+      <div style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:4px;padding:10px 18px;font-size:12px;color:var(--g200);">AI Strategy ✓</div>
+      <div style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:4px;padding:10px 18px;font-size:12px;color:var(--g200);">Business Model ✓</div>
+      <div style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:4px;padding:10px 18px;font-size:12px;color:var(--g200);">Wealth Plan ✓</div>
+      <div style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:4px;padding:10px 18px;font-size:12px;color:var(--g200);">Network Plan ✓</div>
+    </div>
+    <p style="font-size:13px;color:var(--g600);font-style:italic;">The system is designed. The next move is yours.</p>
+  </div>
+</div>
+</div><!-- end v4 -->
+
+</div><!-- end app -->
+
+<script>
+function goHome(){document.getElementById('cover').style.display='flex';document.getElementById('app').classList.remove('visible');document.getElementById('nav').classList.remove('visible');window.scrollTo(0,0);}
+function openVol(i){
+  document.getElementById('cover').style.display='none';
+  document.getElementById('app').classList.add('visible');
+  document.getElementById('nav').classList.add('visible');
+  document.querySelectorAll('.vwrap').forEach(v=>v.classList.remove('active'));
+  document.getElementById('v'+i).classList.add('active');
+  document.querySelectorAll('.nvb').forEach((b,j)=>b.classList.toggle('active',j===i));
+  window.scrollTo(0,0);
+}
+function showCh(v,c){
+  const vol=document.getElementById('v'+v);
+  vol.querySelectorAll('.chcon').forEach(x=>x.classList.remove('active'));
+  vol.querySelectorAll('.chtab').forEach(x=>x.classList.remove('active'));
+  const ch=document.getElementById('c'+v+'-'+c);
+  const tabs=vol.querySelectorAll('.chtab');
+  if(ch)ch.classList.add('active');
+  if(tabs[c])tabs[c].classList.add('active');
+  const nav=document.getElementById('cn'+v);
+  if(nav)window.scrollTo(0,nav.offsetTop-54);
+}
+function ck(cb){cb.closest('li').classList.toggle('ck',cb.checked);}
+function us(id,val){
+  const el=document.getElementById(id);
+  if(el)el.textContent=val;
+  // Update scorecard totals
+  const groups={
+    'a':['a0','a1','a2','a3'],
+    'b':['b0','b1','b2','b3','b4'],
+    'c':['c0','c1','c2','c3'],
+    'd':['d0','d1','d2','d3'],
+    'e':['e0','e1','e2','e3'],
+    'f':['f0','f1','f2','f3']
+  };
+  const verdicts={
+    'a':(t,m)=>t>m*.65?'→ Strong Business Path profile':t<m*.4?'→ Strong University Path profile':'→ Balanced — consider hybrid approach',
+    'b':(t,m)=>t>m*.6?'→ Finance profile — lean towards capital markets':t<m*.4?'→ Consulting profile — lean towards strategy':'→ Balanced — evaluate by your exit goals',
+    'c':(t,m)=>t>m*.6?'→ Builder profile — invest in Python & APIs':'→ Power User profile — focus on workflow automation',
+    'd':(t,m)=>t>m*.7?'→ Product-first profile':t<m*.4?'→ Service-first profile — start with consulting':'→ Hybrid approach recommended',
+    'e':(t,m)=>t>m*.7?'→ Aggressive growth profile — 80%+ equities':t<m*.4?'→ Conservative — consider more diversification':'→ Moderate profile — balanced growth portfolio',
+    'f':(t,m)=>t>m*.7?'→ Strong network — deepen key relationships':t<m*.4?'→ Critical gap — network investment is priority #1':'→ Significant gaps — prioritize network investment'
+  };
+  const prefix=id.replace(/\d+$/,'');
+  if(groups[prefix]){
+    const ids=groups[prefix];
+    let total=0;
+    ids.forEach(sid=>{
+      const inp=document.querySelector('input[oninput*="\''+sid+'\'"]');
+      total+=inp?parseInt(inp.value):5;
+    });
+    const max=ids.length*10;
+    const te=document.getElementById(prefix+'-tot');
+    const ve=document.getElementById(prefix+'-vrd');
+    if(te)te.textContent=total+'/'+max;
+    if(ve&&verdicts[prefix])ve.textContent=verdicts[prefix](total,max);
+  }
+}
+window.addEventListener('scroll',()=>{
+  const st=window.scrollY||document.documentElement.scrollTop;
+  const dh=document.documentElement.scrollHeight-document.documentElement.clientHeight;
+  const pb=document.getElementById('pb');
+  if(pb)pb.style.width=(dh>0?Math.round(st/dh*100):0)+'%';
+});
+</script>
+</body>
+</html>
